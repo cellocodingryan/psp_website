@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Downloaded</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>The Application Pdf Should have downloaded, but if it didn't here are direct links</h1>
+<a id="down" href="application.pdf" download> Download, Click Here! </a> <br><br>
+<a style="" id="go_to_page" href="http://percussionscholars.com/application.pdf" target="_blank"> Open, Click Here! </a>
+<script>
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+            }
+        }
+    }
+    document.getElementById('down').click();
+sleep(10000);
+    document.getElementById('go_to_page').click();
+
+</script>
+</body>
+</html>
