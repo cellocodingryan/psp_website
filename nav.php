@@ -129,17 +129,10 @@ if (isset($restricted) ) {
             }
             if ($_SESSION['u_rank'] >= 1) {
                 $current = "";
-                if ($user_location == "mass_email") {
+                if ($user_location == "m2qass_email") {
                     $current = "current";
                 }
                 echo '<a href="mass_email.php" class="' . $current . '">Mass Email</a>';
-            }
-            if ($_SESSION['u_rank'] >= 1) {
-                $current = "";
-                if ($user_location == "feature_request") {
-                    $current = "current";
-                }
-                echo '<a href="feature_request.php" class="' . $current . '">Feature Request</a>';
             }
 
 
