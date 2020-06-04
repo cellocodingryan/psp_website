@@ -141,22 +141,7 @@ if (isset($restricted) ) {
 <a href="resetpass.php">Change Password</a>';
 
 
-            //mothers day here
 
-            if ($_SESSION['u_rank'] >= 2) {
-                $current = "";
-                if ($user_location == "motheres") {
-                    $current = "current";
-                    echo '<a href="mothers.php" class="' . $current . '">Happy Mother\'s Day</a>';
-                }
-            }
-            if ($_SESSION['u_rank'] >= 2) {
-                $current = "";
-                if ($user_location == "fathers") {
-                    $current = "current";
-                }
-                echo '<a href="fathers.php" class="' . $current . '">Happy Father\'s Day</a>';
-            }
 
 
 
