@@ -1,0 +1,14 @@
+{
+    "name": "cellocodingryan/psp",
+    "type": "project",
+    "authors": [
+        {
+            "name": "cellocodingryan",
+            "email": "cellocodingryan@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.0",
+        "phpmailer/phpmailer": "^6.1"
+    }
+}

@@ -36,7 +36,7 @@ include_once 'nav.php';
     <h1>Welcome</h1>
     <p>On behalf of <u>The Percussion Scholarship Group</u> we would like to welcome you to our official website. Feel free to check out our gallery and keep up with our upcoming events. We appreciate all of your support and hope you continue to enjoy our music.</p>
     <?php if (isset($_SESSION['u_id'])): ?>
-    <p>This site will be offline for system updates on 12/30/19 from 01:00 to 05:00 CST.</p>
+    <p></p>
     <?php endif ?>
 </div>
 <div class="promo_video_container container">

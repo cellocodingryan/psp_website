@@ -1,10 +1,9 @@
 old/*
 config/*
 
-includes/mass_email-inc.php
 images/*
-includes/upload-inc.php
-includes/upload_assignment.php
+
+
 js/._docs.min.js
 js/docs.min.js
 js/jquery.tablesorter.min.js
@@ -17,10 +16,11 @@ pspImages/*
 schedules/*
 *.pdf
 
-/email-inc.php
 /fathers.php
-/Instruction_Videos.php
-/mail_confirm.php
+
 /mothers.php
 
-/vendor/
+/vendor/*
+/testemail/*
+/config_files/*
+videos/*
