@@ -7,4 +7,4 @@ $twig = new \Twig\Environment($loader, [
     'cache' => 'cache',
 ]);
 
-echo $twig->render('home.twig', ['name' => 'Fabien']);
+echo $twig->render('home.twig');
