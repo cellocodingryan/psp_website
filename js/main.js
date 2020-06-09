@@ -18,25 +18,25 @@ function moveTitle() {
     }
 }
 
-if ($(".welcome_article").length !== 0) {
-    $.get('config_files/promo_videos.txt', function(result) {
-        var promo_video_config = JSON.parse(result);
-        for (var i=0;i<promo_video_config.promo_videos.length;i++) {
-            var newVideoTagContainer = document.createElement("div");
-            newVideoTagContainer.setAttribute("class","col promo_videos promo_videos"+i);
-
-            var newVideoTag = document.createElement("video");
-            newVideoTag.setAttribute("height","100%");
-            newVideoTag.setAttribute("width","100%");
-            newVideoTag.setAttribute("controls","");
-            newVideoTag.setAttribute("poster","images/"+promo_video_config.promo_videos[i]+".jpg");
-            newVideoTag.src = "videos/"+promo_video_config.promo_videos[i]+".mp4";
-            $(".video_container").append(newVideoTagContainer);
-            $(".promo_videos"+i).append(newVideoTag);
-        }
-        $(".video_container h1").remove();
-    });
-}
+// if ($(".welcome_article").length !== 0) {
+//     $.get('config_files/promo_videos.txt', function(result) {
+//         var promo_video_config = JSON.parse(result);
+//         for (var i=0;i<promo_video_config.promo_videos.length;i++) {
+//             var newVideoTagContainer = document.createElement("div");
+//             newVideoTagContainer.setAttribute("class","col promo_videos promo_videos"+i);
+//
+//             var newVideoTag = document.createElement("video");
+//             newVideoTag.setAttribute("height","100%");
+//             newVideoTag.setAttribute("width","100%");
+//             newVideoTag.setAttribute("controls","");
+//             newVideoTag.setAttribute("poster","images/"+promo_video_config.promo_videos[i]+".jpg");
+//             newVideoTag.src = "videos/"+promo_video_config.promo_videos[i]+".mp4";
+//             $(".video_container").append(newVideoTagContainer);
+//             $(".promo_videos"+i).append(newVideoTag);
+//         }
+//         $(".video_container h1").remove();
+//     });
+// }
 
 function add_video_to_video_tab(urls) {
     $(".video_tab").append("<div class=\"row\">\n" +

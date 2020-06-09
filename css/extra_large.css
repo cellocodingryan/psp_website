@@ -80,12 +80,11 @@ nav {
     background-color: #2e190a;
 }
 nav a {
-    margin: 12px 0px 0px 5px;
-    padding: 0 10px 10px 10px;
+    /*margin: 12px 0px 0px 5px;*/
+    /*padding: 0 10px 10px 10px;*/
     color: #f5a06e;
     text-transform: uppercase;
     text-decoration: none;
-    display: inline-block;
     font-weight: bold;
     font-size: .9em;
 }
