@@ -2,12 +2,30 @@
     box-sizing: border-box;
 }
 body {
-    max-width: 1500px;
+    max-width: 1800px;
     margin: 0 auto;
+}
+
+nav,nav div {
+    background-color: #2e190a !important;
+}
+nav a,nav div a {
+    color: #f5a06e !important;
+}
+nav a:hover, nav a:focus, nav a:focus-within,.nav-pills .show>.nav-link {
+    color: #fff !important;
+    background-color: #2e190a !important;
+
 }
 img[src="images/banner.jpg"] {
     width: 100%;
 }
+.about_image {
+    margin: 0 auto;
+    width: 50%;
+    display: block;
+}
+
 .center {
     text-align: center;
 }
