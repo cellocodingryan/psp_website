@@ -1,14 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block header %}
-    <div class="title_leader_and_logo container">
-        <div class="title_and_leaders row">
-            <div class="header_logo col"></div>
-            <div class="leader_text col">
-                <p>The Percussion Scholarship Group &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Patricia Dash & Douglas Waddell, Directors</p>
-            </div>
-        </div>
-    </div>
     <img src="images/banner.jpg">
 
     {% include 'nav.twig' %}
@@ -18,7 +10,7 @@
     <h1>Welcome</h1>
     <p>On behalf of <u>The Percussion Scholarship Group</u> we would like to welcome you to our official website. Feel free to check out our gallery and keep up with our upcoming events. We appreciate all of your support and hope you continue to enjoy our music.</p>
 </div>
-<div class="promo_video_container container">
+<div class="promo_video_container container no-gutters" style="width: 100%;max-width: 100%;">
     <div class="row video_container">
 
         <div class="col promo_videos promo_videos0">
@@ -38,5 +30,4 @@
         </div>
     </div>
 </div>
-<h1 id="credit">Created by <a target="_blank" href="http://homepages.rpi.edu/~wadder" style="text-decoration: overline underline;" >Ryan Waddell</a></h1>
 {% endblock %}

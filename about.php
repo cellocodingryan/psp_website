@@ -1,12 +1,6 @@
 
 <?php
-require_once 'vendor/autoload.php';
-
-
-$loader = new \Twig\Loader\FilesystemLoader('views');
-$twig = new \Twig\Environment($loader, [
-
-]);
+require_once 'init.php';
 class User {
     function __construct($src,$label,$description) {
         $this->src = $src;

@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+img[src="images/banner.jpg"] {
+    width: 100%;
+}
+.center {
+    text-align: center;
+}
+.welcome_article {
+    padding: 1rem 1rem;
+}
