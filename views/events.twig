@@ -1,0 +1,31 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    {% include 'nav.twig' %}
+<img class="bannerimage" src="images/events.png">
+
+<div id="event_page" class="container">
+    <div class="row">
+            {% for event in events %}
+        <div class="col">
+            <div class="events_icon">
+                <strong>{{ event.month }}</strong>
+                <span>{{ event.daynumber }}</span>
+                <em>{{ event.dayword }}</em>
+            </div></div>
+        <div class="col">
+            <h1>{{ event.title }}</h1>
+            <h2>{{ event.month }} {{ event.daynumber }}, {{ event.fullyear }}</h2>
+            <h2>{{ event.time }} {{ event.ampm }}</h2>
+            <p> Symphony Center<br>220 S. Michigan Ave.<br>Chicago, Illinois</p>
+        </div>
+        <div class="col">
+            <div class="events_icon">
+                <strong> Time </strong>
+                <span>{{ event.time }}</span>
+                <em>{{ event.ampm }}</em>
+            </div>
+        </div>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}
