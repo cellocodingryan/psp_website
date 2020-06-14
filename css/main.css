@@ -30,10 +30,15 @@ header images
 img[src="images/banner.jpg"] {
     width: 100%;
 }
+
+
 .about_image,.bannerimage {
     margin: 0 auto;
     width: 50%;
     display: block;
+}
+img[src="images/faq.png"] {
+    width: 15%;
 }
 /*
 center text

@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <img class="bannerimage" src="images/faq.png">
+    {% for i in 0..questions|length %}
+        <div class="accordion" id="faq">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse_{{ i }}" aria-expanded="false" aria-controls="collapseOne">
+                            {{questions[i].q}}
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapse_{{ i }}" class="collapse" aria-labelledby="headingOne" data-parent="#faq">
+                    <div class="card-body">
+                        {{ questions[i].a }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    {% endfor %}
+{% endblock %}
