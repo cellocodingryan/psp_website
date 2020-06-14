@@ -2,37 +2,37 @@
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto  nav-pills">
             <li class="nav-item mr-auto">
-                <a href="index.php" class="nav-link">Home</a>
+                <a href="index.php" class="nav-link {% if current == 'index' %}current{% endif %}">Home</a>
             </li>
             <li class="nav-item">
-                <a href="events.php" class="nav-link">Events</a>
+                <a href="events.php" class="nav-link {% if current == 'events' %}current{% endif %}">Events</a>
             </li>
             <li class="nav-item">
-                <a href="videos.php" class="nav-link">Performances</a>
+                <a href="videos.php" class="nav-link {% if current == 'videos' %}current{% endif %}">Performances</a>
             </li>
             <li class="nav-item">
-                <a href="faq.php" class="nav-link">FAQ</a>
+                <a href="faq.php" class="nav-link {% if current == 'faq' %}current{% endif %}">FAQ</a>
             </li>
             <li class="nav-item">
-                <a href="about.php" class="nav-link">About</a>
+                <a href="about.php" class="nav-link {% if current == 'about' %}current{% endif %}">About</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                    aria-expanded="false">Members Area</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Practice Videos</a>
+                    <a class="dropdown-item {% if current == 'Instruction_Videos' %}current{% endif %}" href="Instruction_Videos.php">Practice Videos</a>
                 </div>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"></a>
+                    <a class="dropdown-item {% if current == '' %}current{% endif %}" href="#"></a>
                 </div>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"></a>
+                    <a class="dropdown-item {% if current == '' %}current{% endif %}" href="#"></a>
                 </div>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"></a>
+                    <a class="dropdown-item {% if current == '' %}current{% endif %}" href="#"></a>
                 </div>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"></a>
+                    <a class="dropdown-item {% if current == '' %}current{% endif %}" href="#"></a>
                 </div>
             </li>
         </ul>
@@ -46,7 +46,7 @@
         <ul class="navbar-nav ml-auto  nav-pills">
 
             <li class="nav-item ml-auto">
-                <a href="about.php" class="nav-link">Log in</a>
+                <a href="login.php" class="nav-link">Log in</a>
             </li>
             <li class="nav-item ml-auto">
                 <a href="about.php" class="nav-link">Create Account</a>

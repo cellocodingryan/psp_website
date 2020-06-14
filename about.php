@@ -37,7 +37,7 @@ $users = [
     new User("member_images/Shumei.jpg","Shumei Gong",""),
     new User("member_images/Lucia.jpg","Lucia Leon",""),
 ];
-echo $twig->render('about.twig', ['users' => $users]);
+echo $twig->render('about.twig', ['users' => $users,"current"=>"about"]);
 ?>
 
 
