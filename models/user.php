@@ -22,6 +22,9 @@ class user
         }
         $result = mysqli_query(db::getdb(), $sql);
         $this->logged_in = false;
+        if (!$result) {
+            return;
+        }
         if (mysqli_num_rows($result) < 1) {
             return;
         } else if (mysqli_num_rows($result) > 1) {
@@ -44,10 +47,12 @@ class user
 
     }
     public static function get_by_id($id) {
-        return new user($id,"id");
+        $user = new user($id,"id");
+        return $user->username != null ? $user : false;
     }
     public static function get_by_uid($uid) {
-        return new user($uid, "usernameemail");
+        $user = new user($uid, "usernameemail");
+        return $user->username != null ? $user : false;
     }
 
     /**
@@ -68,6 +73,39 @@ class user
             return false;
         }
         return false;
+    }
+    public static function create_account($username, $email, $firstname,$lastname,
+                                          $password,$password_confirm) {
+        $db = db::getdb();
+        $username = mysqli_real_escape_string($db,$username);
+        $email = mysqli_real_escape_string($db,$email);
+        $firstname = mysqli_real_escape_string($db,$firstname);
+        $lastname = mysqli_real_escape_string($db,$lastname);
+        $password = mysqli_real_escape_string($db,$password);
+        $password_confirm = mysqli_real_escape_string($db,$password_confirm);
+
+        $existing_user = user::get_by_uid($username);
+        if (!$existing_user) {
+            $existing_user = user::get_by_uid($email);
+            if (!$existing_user) {
+                if ($password_confirm == $password) {
+                    $hashedPwd = password_hash($password, PASSWORD_BCRYPT);
+//            insert the user into the database
+                    $sql = "INSERT INTO users (user_first, user_last, user_email, user_email_all, user_phone, user_uid, user_pwd, address, family, user_rank) VALUES ('$firstname', '$lastname', '$email', '[$email]', '[]', '$username', '$hashedPwd', '', '', '0');";
+                    $res = mysqli_query($db,$sql);
+                    if (!$res) {
+                        user::seterror(mysqli_error($db));
+                        return false;
+                    }
+                    return true;
+                }
+                user::seterror("passwords do not match");
+                return false;
+            }
+        }
+        user::seterror("A user with that username already exists");
+        return false;
+
     }
     public static function logout() {
         unset($_SESSION['user']);
@@ -96,9 +134,22 @@ class user
     public function get_firstname() {
         return $this->firstname;
     }
+    private function seterr($err) {
+        user::$error = $err;
+    }
+    private static function seterror($err) {
+        user::$error = $err;
+    }
+
+    public static function geterr() {
+        $err = user::$error;
+        user::$error = "";
+        return $err;
+    }
     private $username = null;
     private $password = null;
     private $id= null;
+    private static $error = "";
     private $firstname= null;
     private $lastname= null;
     private $email= null;
