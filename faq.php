@@ -36,6 +36,6 @@ array_push($questions,new question("My family has summer vacation plans. If acce
 array_push($questions,new question("I’m interested in seeing the Percussion Scholarship Group perform. How can I find out about upcoming performances?","Information about upcoming performances can be found on this website: www.percussionscholars.com and on the CSO website, www.cso.org."));
 
 
-echo $twig->render('faq.twig',["questions"=>$questions,"current"=>"faq"]);
+echo $twig->render('faq.twig',["questions"=>$questions,"navvars"=>$navvars]);
 
 

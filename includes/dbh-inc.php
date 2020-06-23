@@ -9,10 +9,22 @@
 require(pathinfo(__FILE__, PATHINFO_DIRNAME)."/../config/passwords.php");
 
 
-$dbServername = getenv('dbservername');
-$dbUsername = getenv('dbusernname');
-$dbPassword = getenv('dbpassword');
-$dbName = getenv('dbName');
+class db {
+    private function __construct() {
+        $this->db = new mysqli(
+            getenv('dbservername'),
+        getenv('dbusernname'),
+         getenv('dbpassword'),
+        getenv('dbName')
+        );
+    }
+    public static function getdb() {
+        if (!isset(self::$instance)){
+            self::$instance = new db();
+        }
+        return self::$instance->db;
+    }
+    public static $instance;
+    public $db;
+}
 
-$conn = mysqli_connect($dbServername,$dbUsername,$dbPassword,$dbName);
-$GLOBALS['conn'] = mysqli_connect($dbServername,$dbUsername,$dbPassword,$dbName);

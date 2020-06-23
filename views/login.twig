@@ -2,15 +2,15 @@
 {% block body %}
     {% include 'nav.twig' %}
     <h1 class="center">Login</h1>
-    <form class="container" action="includes/login-inc.php" method="POST">
+    <form class="container" action="{{ lastpage }}" method="POST">
         <div class="form-group" >
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" name="uid" aria-describedby="emailHelp" placeholder="Enter email">
+            <label for="exampleInputEmail1">Email address or Username</label>
+            <input type="text" class="form-control" name="username" aria-describedby="emailHelp" value="{{ email }}" placeholder="Enter email">
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" name="pwd" class="form-control" placeholder="Password">
+            <input type="password" name="password"  class="form-control" placeholder="Password">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

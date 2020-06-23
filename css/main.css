@@ -23,6 +23,9 @@ nav a:hover, nav a:focus, nav a:focus-within,.nav-pills .show>.nav-link,.current
     color: #fff !important;
     background-color: #2e190a !important;
 }
+nav {
+    margin-bottom: .75rem;
+}
 
 /*
 header images
