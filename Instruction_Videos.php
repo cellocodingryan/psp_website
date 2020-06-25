@@ -18,7 +18,7 @@
 </head>
 <body>
 <?php
-$restricted = 1;
+$restricted = 2;
 $user_location = "practice_videos";
 include_once 'nav.php';
 include_once 'includes/functions.php';
