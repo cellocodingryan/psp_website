@@ -189,7 +189,7 @@ $order_form = '<label>Change priority: </label>
 	';
         }
         echo '<h1>' . $row['video_name']  . $delete_button . $order_form . '</h1>';
-        echo '<video controlsList="nodownload" onplay="add_info(\'play\', ' .   $video_name  .' )" onpause="add_info(\'pause\', ' .   $video_name  .' )"src="practice_video/' . $row['file_name'] . '" width="100%" controls> </video>';
+        echo '<video controlsList="nodownload" onplay="add_info(\'play\', ' .   $video_name  .' )" onpause="add_info(\'pause\', ' .   $video_name  .' )"src="fileserver.php?folder=practice_video&videoname=' . $row['file_name'] . '" width="100%" controls> </video>';
 
     }
 }
