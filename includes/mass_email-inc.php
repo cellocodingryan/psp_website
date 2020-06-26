@@ -8,9 +8,13 @@
  * Time: 11:21 PM
  */
 
+
 include_once 'dbh-inc.php';
 include_once 'functions.php';
-
+session_start();
+if (!isset($_SESSION['u_rank']) || $_SESSION['u_rank'] < 1) {
+    die("error");
+}
 $emails_to_send = array();
 $sql = "SELECT * FROM users";
 $result = $conn->query($sql);
@@ -21,6 +25,7 @@ function uploadFTP($server, $username, $password, $local_file, $remote_file){
     // login
     if (@ftp_login($connection, $username, $password)){
         // successfully connected
+
     }
 
     ftp_put($connection, $remote_file, $local_file, FTP_BINARY);
@@ -33,7 +38,7 @@ if (file_exists($_FILES['attachment']['tmp_name'])) {
     $attachment = true;
     $file_name = $_FILES['attachment']['name'];
     $connected = uploadFTP(getenv('serverip'),getenv('ftpusername'),getenv('ftppassword'),$_FILES['attachment']['tmp_name'],getenv('emailattachlocation').'/email_attachment/'.$_FILES['attachment']['name']);
-
+    echo getenv('emailattachlocation').'/email_attachment/'.$_FILES['attachment']['name'];
 }
 
 while ($row = $result->fetch_assoc()) {
@@ -54,7 +59,7 @@ if (strlen($_POST['subject']) > 0) {
     $subject = $_POST['subject'];
 }
 if ($attachment) {
-    $worked = send_mail($emails_to_send, $subject, $message,"../email_attachment/".$file_name);
+    $worked = send_mail($emails_to_send, $subject, $message,"../../email_attachment/".$file_name);
 } else {
     $worked = send_mail($emails_to_send, $subject, $message);
 }
@@ -74,6 +79,7 @@ if (sizeof($worked) > 0) {
         $stat_string .= $person . ", ";
     }
 }
+
 echo '</ul><h1>Sending complete (you can leave the page now)</h1> ';
 add_stat("sent email (debug)" . $stat_string,$_SESSION['u_id']);
 echo '<a href="../mass_email.php">[Go to mass email page]</a><br>';
