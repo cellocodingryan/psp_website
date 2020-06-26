@@ -123,8 +123,19 @@ class VideoStream
         $this->end();
     }
 }
+
+
 //readfile("{$_GET['folder']}/{$_GET['videoname']}");
 
-$v = new VideoStream("{$_GET['folder']}/{$_GET['videoname']}");
-$v->start();
+if ($_GET['folder'] == "practice_video") {
+    $v = new VideoStream("{$_GET['folder']}/{$_GET['videoname']}");
+    $v->start();
+} else {
+    if(file_exists("{$_GET['folder']}/{$_GET['videoname']}")){
+
+        header('Content-Type: application/pdf');
+        readfile("{$_GET['folder']}/{$_GET['videoname']}");
+    }
+}
+
 //header("X-sendfile: {$_GET['folder']}/{$_GET['videoname']}");
