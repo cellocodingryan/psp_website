@@ -123,7 +123,7 @@ if (isset($_GET['part'])) {
 
 if ($practice_part_date != "x") {
 
-    echo '<iframe src="practice_parts/' . $practice_part_date . '.pdf#toolbar=0" frameborder="0"></iframe>';
+    echo '<iframe src="fileserver.php?folder=practice_parts&videoname=' . $practice_part_date . '.pdf#toolbar=0" frameborder="0"></iframe>';
 
 }
 ?>
@@ -151,7 +151,7 @@ if ($_SESSION['u_rank'] > 1) {
     $delete_button = '<a href="#" style="color: red;" onclick="delete_(\'practice_part\',' .$id. ')">[DELETE]</a>';
     echo $delete_button;
 }
-$download = '<a style="color: green;" onclick="download_stat(\''. $name .'\', ' . $_SESSION['u_id'] .')" download href="practice_parts/' .$name. '.pdf">[DOWNLOAD]</a>';
+$download = '<a style="color: green;" onclick="download_stat(\''. $name .'\', ' . $_SESSION['u_id'] .')" download href="fileserver.php?folder=practice_parts&videoname=' .$name. '.pdf">[DOWNLOAD]</a>';
 echo $download.'</form>';
 echo '<h1>' . $row['practice_part_date'] . '</h1>';
 if ($_SESSION['u_rank'] > 1) {
