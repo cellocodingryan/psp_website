@@ -34,11 +34,12 @@ class user
         if ($row = mysqli_fetch_assoc($result)) {
 
             $this->id = $row['user_id'];
-            $this->firstname = $row['user_first'];
+            $this->user_first = $row['user_first'];
             $this->lastname = $row['user_last'];
             $this->email = $row['user_email'];
             $this->emails = $row['user_email_all'];
             $this->username = $row['user_uid'];
+            $this->phones = $row['user_phone'];
             $this->rank = $row['user_rank'];
             $this->password = $row['user_pwd'];
             $this->found = true;
@@ -66,7 +67,6 @@ class user
             $hashedPwdCheck = password_verify($pass, $user->password);
             if ($hashedPwdCheck) {
                 $user->logged_in = true;
-                $user->password = null;
                 $_SESSION['user'] = $user;
                 return $user;
             }
@@ -107,8 +107,109 @@ class user
         return false;
 
     }
+
+    public function set_firstname($firstname) {
+        $this->set_val("user_first",$firstname);
+        $this->user_first = $firstname;
+    }
+    public function set_lastname($lastname) {
+        $this->set_val("user_last",$lastname);
+        $this->lastname;
+    }
+    public function set_primary_email($email) {
+
+        $emails = json_decode($this->emails);
+        $emails[0] = $email;
+        $this->email = $emails[0];
+        $this->emails = json_encode($emails);
+        $this->set_val("user_email_all",json_encode($emails));
+        $this->set_val("user_email",$email);
+    }
+    public function set_emails($emails,$emailnum = -1) {
+        $emails_ = json_decode($this->emails);
+        if ($emailnum != -1) {
+            if (count($emails_) <= $emailnum) {
+                die("{status:500,message:something went wrong}");
+            }
+            if ($emails == "" && $emailnum != 0) {
+                array_splice($emails_, $emailnum, 1);
+
+            } else {
+
+                $emails_[$emailnum] = $emails;
+            }
+        } else {
+            $emails_[] = $emails;
+        }
+        $this->emails = json_encode($emails_);
+        error_log($this->emails);
+        $primary_email = json_decode($this->emails)[0];
+        $this->set_primary_email($primary_email);
+    }
+    public function set_phones($phones,$phonenum = -1) {
+        $phones_ = json_decode($this->phones);
+        if ($phonenum != -1) {
+            if (count($phones_) <= $phonenum) {
+                die("{status:500,message:something went wrong}");
+            }
+            if ($phones == "" && $phonenum != 0) {
+                array_splice($phones_, $phonenum, 1);
+            } else {
+
+                $phones_[$phonenum] = $phones;
+            }
+            
+        } else {
+            $phones_[] = $phones;
+        }
+        $this->phones = json_encode($phones_);
+        $this->set_val("user_phone",$this->phones);
+    }
+    
+    private function set_val($param,$value) {
+        try {
+            $db = db::getdb();
+            $stmt = $db->prepare("UPDATE users SET `{$param}`=? WHERE user_id=?");
+            if (!$stmt) {
+                die (mysqli_error($db));
+            }
+            $stmt->bind_param("ss",$value, $this->id);
+            $stmt->execute();
+//            $this->{$$param} = $value;
+            if ($_SESSION['user']->getid() == $this->id) {
+                $this->logged_in = $_SESSION['user']->logged_in;
+                $_SESSION['user'] = $this;
+            }
+        } catch (Exception $e) {
+            echo mysqli_error($db);
+            die($e);
+        }
+    }
+
     public static function logout() {
         unset($_SESSION['user']);
+    }
+    public static function auth($level_required="loggedin") {
+        $user = self::get_current_user();
+        if ($user->getloggedin()) {
+            return true;
+        }
+        $flash = new flash();
+        $flash->add_warning("Invalid Permissions");
+        header("Location: index.php");
+        exit();
+    }
+    public function change_password($password,$password_confirm) {
+        if ($password != $password_confirm) {
+            return false;
+        }
+        $this->set_val("user_pwd",password_hash($password,PASSWORD_BCRYPT));
+        $this->password = password_hash($password,PASSWORD_BCRYPT);
+        return true;
+
+    }
+    public function check_password($password) {
+        return password_verify($password,$this->password);
     }
     public static function get_current_user() {
         if (!isset($_SESSION['user'])) {
@@ -132,8 +233,64 @@ class user
         return $this->logged_in ? true:false;
     }
     public function get_firstname() {
-        return $this->firstname;
+        return $this->user_first;
     }
+    public function get_lastname() {
+        return $this->lastname;
+    }
+    public function get_email() {
+        return $this->email;
+    }
+    public function get_username() {
+        return $this->username;
+    }
+    public function has_rank($rank) {
+        switch ($rank) {
+            case "member":
+                if ($this->rank == 1.00) {
+                    return true;
+                }
+            case "alumni":
+                if ($this->rank == 1.10) {
+                    return true;
+                }
+            case "director":
+                if ($this->rank == 2.00) {
+                    return true;
+                }
+            case "admin":
+                if ($this->rank == 3.00) {
+                    return true;
+                }
+            default:
+                return false;
+        }
+    }
+    public function get_all_emails() {
+        $email_decode = json_decode($this->emails);
+        error_log($this->emails);
+        if (count($email_decode) == 0) {
+            $email_decode[] = "";
+        }
+        return $email_decode;
+    }
+    public static function geterr() {
+        $err = user::$error;
+        user::$error = "";
+        return $err;
+    }
+
+    public function getid() {
+        return $this->id;
+    }
+    public function get_all_phones() {
+        $email_decode = json_decode($this->phones);
+        if (count($email_decode) == 0) {
+            $email_decode[] = "";
+        }
+        return $email_decode;
+    }
+
     private function seterr($err) {
         user::$error = $err;
     }
@@ -141,16 +298,12 @@ class user
         user::$error = $err;
     }
 
-    public static function geterr() {
-        $err = user::$error;
-        user::$error = "";
-        return $err;
-    }
+
     private $username = null;
     private $password = null;
     private $id= null;
     private static $error = "";
-    private $firstname= null;
+    private $user_first= null;
     private $lastname= null;
     private $email= null;
     private $emails= null;

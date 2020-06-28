@@ -46,7 +46,7 @@ $login_nav = [
 ];
 if (user::is_logged_in()) {
     $login_nav = [
-        (new navitem("Welcome ".user::get_current_user()->get_firstname(),"#"))->add_link("Log out","logout.php")
+        (new navitem("Welcome ".user::get_current_user()->get_firstname(),"#"))->add_link("Profile","profile.php")->add_link("Log out","logout.php")
     ];
 }
 $navvars = [

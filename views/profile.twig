@@ -1,0 +1,353 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    {% include 'nav.twig' %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div id="success">
+
+    </div>
+    <div id="failure">
+
+    </div>
+    <div class="container">
+        <div class="row flex-lg-nowrap">
+
+
+            <div class="col">
+                <div class="row">
+                    <div class="col mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="e-profile">
+                                    <div class="row">
+                                        {#                                    <div class="col-12 col-sm-auto mb-3">#}
+                                        {#                                        <div class="mx-auto" style="width: 140px;">#}
+                                        {#                                            <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">#}
+                                        {#                                                <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>#}
+                                        {#                                            </div>#}
+                                        {#                                        </div>#}
+                                        {#                                    </div>#}
+                                        <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap"><span class="name">{{ firstname }}</span> <span class="lastname">{{ lastname }}</span></h4>
+                                                <p class="mb-0">@{{username}}</p>
+                                                {#                                            <div class="text-muted"><small>Last seen 2 hours ago</small></div>#}
+                                                {#                                            <div class="mt-2">#}
+                                                {#                                                <button class="btn btn-primary" type="button">#}
+                                                {#                                                    <i class="fa fa-fw fa-camera"></i>#}
+                                                {#                                                    <span>Change Photo</span>#}
+                                                {#                                                </button>#}
+                                                {#                                            </div>#}
+                                            </div>
+                                            <div class="text-center text-sm-right">
+                                                <span class="badge badge-secondary">{{ rank }}</span>
+                                                {#                                                <div class="text-muted"><small>Joined 09 Dec 2017</small></div>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                    </ul>
+                                    <div class="tab-content pt-3">
+                                        <div class="tab-pane active">
+                                            <form class="form" novalidate="">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>First Name</label>
+                                                                    <input class="form-control" type="text" name="firstname" placeholder="John Smith" value="{{ firstname }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Username</label>
+                                                                    <input class="form-control" type="text" name="lastname" placeholder="johnny.s" value="{{ lastname }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input class="form-control" name="email" type="text" value="{{ email }}" placeholder="user@example.com">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="additional_emails">
+                                                            <div class="col">
+                                                                <label>Additional Emails</label>
+                                                                {% for e in 0..additional_emails|length - 1 %}
+                                                                <div class="form-group">
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <input class="form-control inline" name="emails" onchange="emails_change(this)" emailid="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
+
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                {% endfor %}
+                                                                {% if additional_phones|length != 0 %}
+                                                                    <button type="button" class="btn btn-primary" >Add Email</button>
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="additional_phones">
+                                                            <div class="col">
+                                                                <label>Additional phones</label>
+                                                                {% for e in 0..additional_phones|length - 1 %}
+                                                                <div class="form-group">
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <input class="form-control inline" name="phones" onchange="phones_change(this)" phoneid="{{ e }}" type="text" value="{{ additional_phones[e] }}" placeholder="user@example.com">
+
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                {% endfor %}
+                                                                {% if additional_phones|length != 0 %}
+                                                                    <button type="button" class="btn btn-primary" >Add phone</button>
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                        
+
+
+
+{#                                                        <div class="row">#}
+{#                                                            <div class="col mb-3">#}
+{#                                                                <div class="form-group">#}
+{#                                                                    <label>About</label>#}
+{#                                                                    <textarea class="form-control" rows="5" placeholder="My Bio"></textarea>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <div class="mb-2"><b>Change Password</b></div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Current Password</label>
+                                                                    <input class="form-control"  type="password" name="password_old" placeholder="••••••">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>New Password</label>
+                                                                    <input required class="form-control" type="password" name="password" placeholder="••••••">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                                                                    <input required class="form-control" type="password" name="password_confirm" placeholder="••••••"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="button" onclick="change_password()" class="btn btn-primary" >Change Password</button>
+                                                        </div>
+
+                                                    </div>
+                                                    {% if can_change_perms %}
+                                                    <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                                                        <div class="mb-2"><b>Modify Permission</b></div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Reject: <input type="checkbox" name="reject"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Member: <input type="checkbox" name="member"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Alumni: <input type="checkbox" name="almnni"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Director: <input type="checkbox" name="director"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Admin: <input type="checkbox" name="admin"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <button type="button" onclick="change_permissions()" class="btn btn-primary" >Change Permissions</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function success(msg) {
+            $("#success").append(`<div class="alert alert-dismissible fade show alert-success" role="alert">
+    ${msg}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>`)
+            setTimeout(() => {
+
+                $("#success div:first-of-type").alert('close');
+            },2000)
+
+        }
+        function failure(msg) {
+            $("#failure").append(`<div class="alert alert-dismissible fade show alert-danger" role="alert">
+    ${msg}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>`)
+            setTimeout(() => {
+
+                $("#failure div:first-of-type").alert('close');
+            },2000)
+        }
+
+        $("#additional_emails > div > button").click(()=>{
+            $("#additional_emails > div >div:last-of-type").clone().insertAfter("#additional_emails > div >  div:last-of-type")
+            $("#additional_emails > div >div:last-of-type input").val("").attr("emailid","-1");
+        });
+        $("#additional_phones > div > button").click(()=>{
+            $("#additional_phones > div >div:last-of-type").clone().insertAfter("#additional_phones > div >  div:last-of-type")
+            $("#additional_phones > div >div:last-of-type input").val("").attr("phoneid","-1");
+        });
+        
+
+
+        function remove(which) {
+
+            if ($(which).parent().parent().children().children("input").attr("emailid") != undefined) {
+                if ($(which).parent().parent().children().children("input").attr("emailid") == 0) {
+                    failure("You cannot remove that one");
+                    return;
+                }
+            }
+            if ($(which).parent().parent().children().children("input").attr("phoneid") != undefined) {
+                if ($(which).parent().parent().children().children("input").attr("phoneid") == 0) {
+                    failure("You cannot remove that one");
+                    return;
+                }
+            }
+            $(which).parent().parent().children().children("input").val("")
+            $(which).parent().parent().children().children("input").trigger("change")
+            $(which).parent().parent().parent().remove();
+        }
+
+        var id = {{ userid }};
+        $("input[type='submit']").on("submit",(e)=> {
+
+        })
+
+        function showmsg(res) {
+            let d = JSON.parse(res);
+            if (d.status == 200) {
+                success(d.message);
+            } else {
+                failure(d.message);
+            }
+        }
+
+        $("input[name='firstname']").on("change",(e)=> {
+            $.post("api.php?method=edit_profile",{id:id,firstname: $("input[name='firstname']").val()}, (res)=>{
+                showmsg(res);
+                $(".name").text($("input[name='firstname']").val());
+            }).fail(()=>failure("Failed, you are offline"));
+        })
+        $("input[name='lastname']").on("change",(e)=> {
+            $.post("api.php?method=edit_profile",{id:id,lastname: $("input[name='lastname']").val()}, (res)=>{
+                showmsg(res);
+                $(".lastname").text($("input[name='lastname']").val());
+            }).fail(()=>failure("Failed, you are offline"));
+        })
+        $("input[name='email']").on("change",(e)=> {
+            $.post("api.php?method=edit_profile",{id:id,email: $("input[name='email']").val()}, (res)=> {
+                $("input[emailid='0']").val($("input[name='email']").val())
+                showmsg(res)
+            }).fail(()=>failure("Failed, you are offline"));
+        })
+        function emails_change(which) {
+            $.post("api.php?method=edit_profile",{id:id,emails: $(which).val(),emailnum: $(which).attr("emailid")}, (res)=> {
+                $("input[name='email']").val($("input[emailid='0']").val())
+                showmsg(res)
+            }).fail(()=>failure("Failed, you are offline"));
+        }
+        function phones_change(which) {
+            $.post("api.php?method=edit_profile",{id:id,phones: $(which).val(),phonenum: $(which).attr("phoneid")}, (res)=> {
+                $("input[name='phone']").val($("input[phoneid='0']").val())
+                showmsg(res)
+            }).fail(()=>failure("Failed, you are offline"));
+        }
+
+        function change_password() {
+            var old_pass = $("input[name='password_old']").val();
+            var pass = $("input[name='password']").val();
+            var pass_confirm = $("input[name='password_confirm']").val();
+            $.post("api.php?method=change_password",{id:id,password_old:old_pass,password:pass,password_confirm:pass_confirm}, (res)=>showmsg(res));
+        }
+        
+
+
+        function change(item) {
+
+        }
+
+    </script>
+{% endblock %}
