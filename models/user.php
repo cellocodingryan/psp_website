@@ -1,6 +1,9 @@
 <?php
 
 require_once 'includes/dbh-inc.php';
+require_once 'models/response.php';
+require_once 'models/flash.php';
+
 class user
 {
 
@@ -129,41 +132,57 @@ class user
         $emails_ = json_decode($this->emails);
         if ($emailnum != -1) {
             if (count($emails_) <= $emailnum) {
-                die("{status:500,message:something went wrong}");
+//                return;
+                $flash = new flash();
+                $flash->add_danger("invalid");
+                die(new response(401,"invalid (please refresh)"));
             }
             if ($emails == "" && $emailnum != 0) {
                 array_splice($emails_, $emailnum, 1);
 
             } else {
 
+                if (in_array($emails,$emails_)) {
+                    return;
+                    $flash = new flash();
+                    $flash->add_danger("invalid");
+                    die(new response(401,"invalid (please refresh)"));
+                }
+
+
                 $emails_[$emailnum] = $emails;
             }
-        } else {
+        } else if ($emails != "") {
+            if (in_array($emails,$emails_)) {
+                return;
+                $flash = new flash();
+                $flash->add_danger("invalid");
+                die(new response(401,"invalid (please refresh)"));
+            }
             $emails_[] = $emails;
         }
         $this->emails = json_encode($emails_);
-        error_log($this->emails);
         $primary_email = json_decode($this->emails)[0];
         $this->set_primary_email($primary_email);
     }
-    public function set_phones($phones,$phonenum = -1) {
+    public function set_phones($phones,$type,$phonenum = -1) {
         $phones_ = json_decode($this->phones);
-        if ($phonenum != -1) {
-            if (count($phones_) <= $phonenum) {
-                die("{status:500,message:something went wrong}");
-            }
-            if ($phones == "" && $phonenum != 0) {
-                array_splice($phones_, $phonenum, 1);
-            } else {
-
-                $phones_[$phonenum] = $phones;
-            }
-            
-        } else {
-            $phones_[] = $phones;
+        if ($phonenum == -1) {
+            $phones_[] = ["",""];
+            $phonenum = count($phones_)-1;
         }
+        if ($phonenum >= count($phones_)) {
+            $flash = new flash();
+            $flash->add_danger("invalid");
+            die(new response(401,"invalid (please refresh)"));
+        }
+
+        $phones_[$phonenum][$type] = $phones;
+        if ($phones_[$phonenum] == ["",""] && $phonenum != 0) {
+            array_splice($phones_, $phonenum, 1);
+        }
+        $this->set_val("user_phone",json_encode($phones_));
         $this->phones = json_encode($phones_);
-        $this->set_val("user_phone",$this->phones);
     }
     
     private function set_val($param,$value) {
@@ -191,8 +210,13 @@ class user
     }
     public static function auth($level_required="loggedin") {
         $user = self::get_current_user();
-        if ($user->getloggedin()) {
-            return true;
+        if (user::is_logged_in()) {
+            if ($level_required == "loggedin") {
+                return true;
+            }
+            if ($user->has_rank($level_required)) {
+                return true;
+            }
         }
         $flash = new flash();
         $flash->add_warning("Invalid Permissions");
@@ -268,7 +292,6 @@ class user
     }
     public function get_all_emails() {
         $email_decode = json_decode($this->emails);
-        error_log($this->emails);
         if (count($email_decode) == 0) {
             $email_decode[] = "";
         }
@@ -284,11 +307,31 @@ class user
         return $this->id;
     }
     public function get_all_phones() {
-        $email_decode = json_decode($this->phones);
-        if (count($email_decode) == 0) {
-            $email_decode[] = "";
+        $phone_decode = json_decode($this->phones);
+        if (count($phone_decode) == 0) {
+            $phone_decode[] = "";
         }
-        return $email_decode;
+        return $phone_decode;
+    }
+
+    public function set_rank($rank) {
+
+        switch ($rank) {
+            case "admin":
+                $this->set_val("user_rank",3.00);
+                break;
+            case "member":
+                $this->set_val("user_rank",1.00);
+                break;
+            case "director":
+                $this->set_val("user_rank",2.00);
+                break;
+            case "alumni":
+                $this->set_val("user_rank",1.10);
+                break;
+            default:
+                $this->set_val("user_rank",0.0);
+        }
     }
 
     private function seterr($err) {

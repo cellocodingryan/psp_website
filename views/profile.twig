@@ -8,6 +8,7 @@
     <div id="failure">
 
     </div>
+
     <div class="container">
         <div class="row flex-lg-nowrap">
 
@@ -80,11 +81,11 @@
                                                                 {% for e in 0..additional_emails|length - 1 %}
                                                                 <div class="form-group">
                                                                         <div class="row">
-                                                                            <div class="col">
+                                                                            <div class="col-md-10 col-8">
                                                                                 <input class="form-control inline" name="emails" onchange="emails_change(this)" emailid="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
 
                                                                             </div>
-                                                                            <div class="col">
+                                                                            <div class="col-md-2 col-3">
                                                                                 <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
 
                                                                             </div>
@@ -93,7 +94,10 @@
                                                                 </div>
                                                                 {% endfor %}
                                                                 {% if additional_phones|length != 0 %}
-                                                                    <button type="button" class="btn btn-primary" >Add Email</button>
+{#                                                                <div class="text-center">#}
+
+                                                                <button type="button" class="btn btn-primary" >Add Email</button>
+{#                                                                </div>#}
                                                                 {% endif %}
 
                                                             </div>
@@ -103,12 +107,22 @@
                                                                 <label>Additional phones</label>
                                                                 {% for e in 0..additional_phones|length - 1 %}
                                                                 <div class="form-group">
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <input class="form-control inline" name="phones" onchange="phones_change(this)" phoneid="{{ e }}" type="text" value="{{ additional_phones[e] }}" placeholder="user@example.com">
+                                                                        <div class="row " style="justify-content: flex-start">
+                                                                            <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
+                                                                                <span >Name</span>
+                                                                            </div>
+                                                                            <div class="col-md-4 col-sm-9 col-9">
+                                                                                <input class="form-control inline" name="phones_name" onchange="phones_change(this,0)" phoneid="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="user@example.com">
+                                                                            </div>
+                                                                            <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
+                                                                                <label>Number</label>
+                                                                            </div>
+                                                                            <div class="col-md-4 col-sm-5 col-5" >
+                                                                                <input class="form-control inline" name="phones_number" onchange="phones_change(this,1)" phoneid="{{ e }}" type="tel" value="{{ additional_phones[e][1] }}" placeholder="888-888-8888">
 
                                                                             </div>
-                                                                            <div class="col">
+
+                                                                            <div class="col-md-1 col-sm-1 col-1">
                                                                                 <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
 
                                                                             </div>
@@ -117,12 +131,15 @@
                                                                 </div>
                                                                 {% endfor %}
                                                                 {% if additional_phones|length != 0 %}
-                                                                    <button type="button" class="btn btn-primary" >Add phone</button>
+{#                                                                    <div class="text-center">#}
+                                                                        <button type="button" class="btn btn-primary" style="margin: 0 auto !important;">Add phone</button>
+
+{#                                                                    </div>#}
                                                                 {% endif %}
 
                                                             </div>
                                                         </div>
-                                                        
+
 
 
 
@@ -170,38 +187,38 @@
                                                     {% if can_change_perms %}
                                                     <div class="col-12 col-sm-5 offset-sm-1 mb-3">
                                                         <div class="mb-2"><b>Modify Permission</b></div>
+{#                                                        <div class="row" >#}
+{#                                                            <div class="col">#}
+{#                                                                <div class="form-group">#}
+{#                                                                    <label>Reject: <input type="checkbox" name="reject"></label>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
                                                         <div class="row" >
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Reject: <input type="checkbox" name="reject"></label>
+                                                                    <label>Member: <input type="checkbox" {% if member%} checked {% endif%} name="member"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row" >
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Member: <input type="checkbox" name="member"></label>
+                                                                    <label>Alumni: <input type="checkbox" {% if alumni%} checked {% endif%} name="almnni"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row" >
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Alumni: <input type="checkbox" name="almnni"></label>
+                                                                    <label>Director: <input type="checkbox" {% if director%}checked{% endif%} name="director"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row" >
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Director: <input type="checkbox" name="director"></label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" >
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label>Admin: <input type="checkbox" name="admin"></label>
+                                                                    <label>Admin: <input type="checkbox" {% if admin%}checked{% endif%} name="admin"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -212,7 +229,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
 
                                                     </div>
                                                     {% endif %}
@@ -230,6 +246,9 @@
 
             </div>
         </div>
+        {% if can_change_perms %}
+            <a href="modify_users.php">Go Back</a>
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -269,7 +288,7 @@
             $("#additional_phones > div >div:last-of-type").clone().insertAfter("#additional_phones > div >  div:last-of-type")
             $("#additional_phones > div >div:last-of-type input").val("").attr("phoneid","-1");
         });
-        
+
 
 
         function remove(which) {
@@ -279,15 +298,19 @@
                     failure("You cannot remove that one");
                     return;
                 }
+                $(which).parent().parent().children().children("input").val("");
+                $(which).parent().parent().children().children("input").trigger("change");
+
             }
             if ($(which).parent().parent().children().children("input").attr("phoneid") != undefined) {
                 if ($(which).parent().parent().children().children("input").attr("phoneid") == 0) {
                     failure("You cannot remove that one");
                     return;
                 }
+                $(which).parent().parent().children("div:nth-child(2)").children("input").val("");
+                $(which).parent().parent().children("div:nth-child(2)").children("input").trigger("change");
             }
-            $(which).parent().parent().children().children("input").val("")
-            $(which).parent().parent().children().children("input").trigger("change")
+            // $(which).parent().parent().children("div:first-of-type").children("input").trigger("change")
             $(which).parent().parent().parent().remove();
         }
 
@@ -298,6 +321,9 @@
 
         function showmsg(res) {
             let d = JSON.parse(res);
+            if (d.status == 401) {
+                location.reload();
+            }
             if (d.status == 200) {
                 success(d.message);
             } else {
@@ -329,11 +355,11 @@
                 showmsg(res)
             }).fail(()=>failure("Failed, you are offline"));
         }
-        function phones_change(which) {
-            $.post("api.php?method=edit_profile",{id:id,phones: $(which).val(),phonenum: $(which).attr("phoneid")}, (res)=> {
-                $("input[name='phone']").val($("input[phoneid='0']").val())
+        function phones_change(which,type) {
+            $.post("api.php?method=edit_profile",{id:id,type:type,phones: $(which).val(),phoneid: $(which).attr("phoneid")}, (res)=> {
                 showmsg(res)
             }).fail(()=>failure("Failed, you are offline"));
+
         }
 
         function change_password() {
@@ -342,12 +368,19 @@
             var pass_confirm = $("input[name='password_confirm']").val();
             $.post("api.php?method=change_password",{id:id,password_old:old_pass,password:pass,password_confirm:pass_confirm}, (res)=>showmsg(res));
         }
-        
+
 
 
         function change(item) {
 
         }
 
+        function change_permissions() {
+            let member = $("input[name='member']").is(":checked");
+            let alumni = $("input[name='alumni']").is(":checked");
+            let director = $("input[name='director']").is(":checked");
+            let admin = $("input[name='admin']").is(":checked");
+            $.post("api.php?method=change_permissions",{id:id,member:member,alumni:alumni,director:director,admin:admin}, (res)=>showmsg(res));
+        }
     </script>
 {% endblock %}

@@ -2,25 +2,11 @@
 require_once "models/user.php";
 session_start();
 require_once 'includes/dbh-inc.php';
-class response {
-    public function __construct($status,$message)
-    {
-        $this->message = $message;
-        $this->status = $status;
-    }
-    public function __toString()
-    {
-        return json_encode(["status"=>$this->status,"message"=>$this->message]);
-    }
-
-    private $status;
-    private $message;
-}
+require_once 'models/response.php';
 if (isset($_GET['method'])) {
     switch ($_GET['method']) {
         case "edit_profile":
             if (!user::is_logged_in()) {
-
                 echo (new response(403,"Not logged in"));
                 exit();
             }
@@ -50,11 +36,13 @@ if (isset($_GET['method'])) {
                 echo (new response(400,"invalid"));
                 exit();
             }
-            if (isset($_POST['phones']) && isset($_POST['phonenum'])) {
-                $user->set_phones($_POST['phones'],$_POST['phonenum']);
-            } else if (isset($_POST['phones'])) {
-                echo (new response(400,"invalid"));
-                exit();
+            if (isset($_POST['phoneid'])) {
+                if (!isset($_POST['type'])) {
+                    echo (new response(400,"invalid"));
+                    exit();
+                }
+                $user->set_phones($_POST['phones'],$_POST['type'],$_POST['phoneid']);
+
             }
             
             echo (new response(200, "Success"));
@@ -87,6 +75,34 @@ if (isset($_GET['method'])) {
             }
             echo (new response(400,"invalid"));
 
+            break;
+        case "change_permissions":
+            $flash = new flash();
+            if (!user::get_current_user()->has_rank("director")) {
+                $flash->add_danger("Invalid Permissions");
+                die(new response(401,"invalid (please refresh)"));
+            }
+            if (!isset($_POST['id'])) {
+                echo (new response(200,"invalid"));
+            }
+            if ($_POST['id'] == user::get_current_user()->getid()) {
+                $flash->add_danger("Invalid Permissions");
+                $id = $_POST['id'];
+                die(new response(401,"invalid (please refresh)"));
+            }
+            $user = user::get_by_id($_POST['id']);
+            if (isset($_POST['admin']) && $_POST['admin']=="true") {
+                $user->set_rank("admin");
+            } else if (isset($_POST['director']) && $_POST['director']=="true") {
+                $user->set_rank("director");
+            } else if (isset($_POST['alumni']) && $_POST['alumni']=="true") {
+                $user->set_rank("alumni");
+            } else if (isset($_POST['member'])&& $_POST['member']=="true") {
+                $user->set_rank("member");
+            } else {
+                $user->set_rank("");
+            }
+            echo (new response(200, "Success"));
             break;
         default:
     }
