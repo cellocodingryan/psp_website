@@ -20,32 +20,61 @@ if (isset($_GET['method'])) {
                     exit();
                 }
             }
-            $user = user::get_by_id($_POST['id']);
+
+            $response = new response(200, "Success");
+            $user = null;
+            if ($_POST['id'] == -1) {
+                $user = user::get_current_user();
+            } else {
+                $user = user::get_by_id($_POST['id']);
+            }
             if (isset($_POST['firstname'])) {
                 $user->set_firstname($_POST['firstname']);
+                $response->add_attr("new_val",$user->get_firstname());
             }
             if (isset($_POST['lastname'])) {
                 $user->set_lastname($_POST['lastname']);
+                $response->add_attr("new_val",$user->get_lastname());
+
             }
             if (isset($_POST['email'])) {
                 $user->set_primary_email($_POST['email']);
+                $response->add_attr("new_val",$user->get_email());
             }
-            if (isset($_POST['emails']) && isset($_POST['emailnum'])) {
-                $user->set_emails($_POST['emails'],$_POST['emailnum']);
-            } else if (isset($_POST['emails'])) {
-                echo (new response(400,"invalid"));
-                exit();
-            }
-            if (isset($_POST['phoneid'])) {
-                if (!isset($_POST['type'])) {
+            if (isset($_POST['emails'])) {
+                if (!isset($_POST['which_element'])) {
                     echo (new response(400,"invalid"));
                     exit();
                 }
-                $user->set_phones($_POST['phones'],$_POST['type'],$_POST['phoneid']);
-
+                $emailnum = $user->set_emails($_POST['emails'],$_POST['which_element']);
+                $emails = $user->get_all_emails();
+                $response->add_attr("which_element",$emailnum);
+                if ($emailnum > -1) {
+                    $response->add_attr("new_val",$emails[$emailnum]);
+                }
+            }
+            if (isset($_POST['phones_name']) || isset($_POST['phones_number'])) {
+                if (!isset($_POST['which_element'])) {
+                    echo (new response(400,"invalid"));
+                    exit();
+                }
+                $type = 0;
+                $value = "";
+                if (isset($_POST['phones_number'])) {
+                    $type = 1;
+                    $value = $_POST['phones_number'];
+                } else {
+                    $value = $_POST['phones_name'];
+                }
+                $phonenum = $user->set_phones($value,$type,$_POST['which_element']);
+                $phones = $user->get_all_phones();
+                $response->add_attr("which_element",$phonenum);
+                if ($phonenum > -1) {
+                    $response->add_attr("new_val",$phones[$phonenum][$type]);
+                }
             }
             
-            echo (new response(200, "Success"));
+            echo $response;
             
             break;
         case "change_password":

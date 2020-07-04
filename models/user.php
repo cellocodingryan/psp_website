@@ -139,35 +139,36 @@ class user
             }
             if ($emails == "" && $emailnum != 0) {
                 array_splice($emails_, $emailnum, 1);
+                $emailnum = -1;
 
             } else {
 
                 if (in_array($emails,$emails_)) {
-                    return;
                     $flash = new flash();
                     $flash->add_danger("invalid");
                     die(new response(401,"invalid (please refresh)"));
                 }
 
-
                 $emails_[$emailnum] = $emails;
             }
         } else if ($emails != "") {
             if (in_array($emails,$emails_)) {
-                return;
+                return null;
                 $flash = new flash();
                 $flash->add_danger("invalid");
                 die(new response(401,"invalid (please refresh)"));
             }
+            $emailnum = count($emails_);
             $emails_[] = $emails;
         }
         $this->emails = json_encode($emails_);
         $primary_email = json_decode($this->emails)[0];
         $this->set_primary_email($primary_email);
+        return $emailnum;
     }
     public function set_phones($phones,$type,$phonenum = -1) {
         $phones_ = json_decode($this->phones);
-        if ($phonenum == -1) {
+        if ($phonenum == -1 || $phonenum >= count($phones_)) {
             $phones_[] = ["",""];
             $phonenum = count($phones_)-1;
         }
@@ -183,6 +184,7 @@ class user
         }
         $this->set_val("user_phone",json_encode($phones_));
         $this->phones = json_encode($phones_);
+        return $phonenum;
     }
     
     private function set_val($param,$value) {

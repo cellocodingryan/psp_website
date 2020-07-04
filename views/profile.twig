@@ -57,7 +57,7 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>First Name</label>
-                                                                    <input class="form-control" type="text" name="firstname" placeholder="John Smith" value="{{ firstname }}">
+                                                                    <input class="form-control" type="text" onchange="change_single(this)" name="firstname" placeholder="John Smith" value="{{ firstname }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col">
@@ -82,7 +82,7 @@
                                                                 <div class="form-group">
                                                                         <div class="row">
                                                                             <div class="col-md-10 col-8">
-                                                                                <input class="form-control inline" name="emails" onchange="emails_change(this)" emailid="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
+                                                                                <input class="form-control inline" name="emails" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
 
                                                                             </div>
                                                                             <div class="col-md-2 col-3">
@@ -112,13 +112,13 @@
                                                                                 <span >Name</span>
                                                                             </div>
                                                                             <div class="col-md-4 col-sm-9 col-9">
-                                                                                <input class="form-control inline" name="phones_name" onchange="phones_change(this,0)" phoneid="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="user@example.com">
+                                                                                <input class="form-control inline" name="phones_name" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="user@example.com">
                                                                             </div>
                                                                             <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
                                                                                 <label>Number</label>
                                                                             </div>
                                                                             <div class="col-md-4 col-sm-5 col-5" >
-                                                                                <input class="form-control inline" name="phones_number" onchange="phones_change(this,1)" phoneid="{{ e }}" type="tel" value="{{ additional_phones[e][1] }}" placeholder="888-888-8888">
+                                                                                <input class="form-control inline" name="phones_number" onchange="change_multiple(this)" which_element="{{ e }}" type="tel" value="{{ additional_phones[e][1] }}" placeholder="888-888-8888">
 
                                                                             </div>
 
@@ -254,133 +254,61 @@
 
 {% block script %}
     <script>
-        function success(msg) {
-            $("#success").append(`<div class="alert alert-dismissible fade show alert-success" role="alert">
-    ${msg}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>`)
-            setTimeout(() => {
-
-                $("#success div:first-of-type").alert('close');
-            },2000)
-
-        }
-        function failure(msg) {
-            $("#failure").append(`<div class="alert alert-dismissible fade show alert-danger" role="alert">
-    ${msg}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>`)
-            setTimeout(() => {
-
-                $("#failure div:first-of-type").alert('close');
-            },2000)
-        }
-
+        const id = {{ userid }};
         $("#additional_emails > div > button").click(()=>{
             $("#additional_emails > div >div:last-of-type").clone().insertAfter("#additional_emails > div >  div:last-of-type")
-            $("#additional_emails > div >div:last-of-type input").val("").attr("emailid","-1");
+            $("#additional_emails > div >div:last-of-type input").val("").attr("which_element","-1");
         });
         $("#additional_phones > div > button").click(()=>{
             $("#additional_phones > div >div:last-of-type").clone().insertAfter("#additional_phones > div >  div:last-of-type")
-            $("#additional_phones > div >div:last-of-type input").val("").attr("phoneid","-1");
+            $("#additional_phones > div >div:last-of-type input").val("").attr("which_element","-1");
         });
 
-
+        // $("input").change(function(e) {
+        //     $(this).css("background","green");
+        // }) ;
 
         function remove(which) {
-
-            if ($(which).parent().parent().children().children("input").attr("emailid") != undefined) {
-                if ($(which).parent().parent().children().children("input").attr("emailid") == 0) {
-                    failure("You cannot remove that one");
-                    return;
+            $(which).parent().parent().children("").children("input").val("");
+            $(which).parent().parent().children("").children("input").trigger("change");
+        }
+        function change_single(which) {
+            let name = $(which).attr("name");
+            let val = $(which).val();
+            $.post("api.php?method=edit_profile",{id:id,[name]:val},function(res) {
+                if (res.status == 200) {
+                    $(which).val(res.new_val);
+                }else if (res.status == 401) {
+                    location.reload();
+                } else {
+                    alert("Something went wrong");
                 }
-                $(which).parent().parent().children().children("input").val("");
-                $(which).parent().parent().children().children("input").trigger("change");
-
-            }
-            if ($(which).parent().parent().children().children("input").attr("phoneid") != undefined) {
-                if ($(which).parent().parent().children().children("input").attr("phoneid") == 0) {
-                    failure("You cannot remove that one");
-                    return;
+            },function(err) {
+                alert("Something went wrong, you are most likely offline");
+            });
+        }
+        function change_multiple(which) {
+            let name = $(which).attr("name");
+            let val = $(which).val();
+            let which_element = $(which).attr("which_element");
+            $.post("api.php?method=edit_profile",{id,[name]:val,which_element},function(res) {
+                res = JSON.parse(res);
+                if (res.status == 200) {
+                    $(which).val(res.new_val);
+                    if (res.which_element == -1) {
+                        $(which).parent().parent().remove();
+                    }
+                    $(which).parent().parent().children("input").attr("which_element",res.which_element);
+                } else if (res.status == 401) {
+                    location.reload();
+                } else {
+                    alert("Something went wrong");
                 }
-                $(which).parent().parent().children("div:nth-child(2)").children("input").val("");
-                $(which).parent().parent().children("div:nth-child(2)").children("input").trigger("change");
-            }
-            // $(which).parent().parent().children("div:first-of-type").children("input").trigger("change")
-            $(which).parent().parent().parent().remove();
-        }
-
-        var id = {{ userid }};
-        $("input[type='submit']").on("submit",(e)=> {
-
-        })
-
-        function showmsg(res) {
-            let d = JSON.parse(res);
-            if (d.status == 401) {
-                location.reload();
-            }
-            if (d.status == 200) {
-                success(d.message);
-            } else {
-                failure(d.message);
-            }
-        }
-
-        $("input[name='firstname']").on("change",(e)=> {
-            $.post("api.php?method=edit_profile",{id:id,firstname: $("input[name='firstname']").val()}, (res)=>{
-                showmsg(res);
-                $(".name").text($("input[name='firstname']").val());
-            }).fail(()=>failure("Failed, you are offline"));
-        })
-        $("input[name='lastname']").on("change",(e)=> {
-            $.post("api.php?method=edit_profile",{id:id,lastname: $("input[name='lastname']").val()}, (res)=>{
-                showmsg(res);
-                $(".lastname").text($("input[name='lastname']").val());
-            }).fail(()=>failure("Failed, you are offline"));
-        })
-        $("input[name='email']").on("change",(e)=> {
-            $.post("api.php?method=edit_profile",{id:id,email: $("input[name='email']").val()}, (res)=> {
-                $("input[emailid='0']").val($("input[name='email']").val())
-                showmsg(res)
-            }).fail(()=>failure("Failed, you are offline"));
-        })
-        function emails_change(which) {
-            $.post("api.php?method=edit_profile",{id:id,emails: $(which).val(),emailnum: $(which).attr("emailid")}, (res)=> {
-                $("input[name='email']").val($("input[emailid='0']").val())
-                showmsg(res)
-            }).fail(()=>failure("Failed, you are offline"));
-        }
-        function phones_change(which,type) {
-            $.post("api.php?method=edit_profile",{id:id,type:type,phones: $(which).val(),phoneid: $(which).attr("phoneid")}, (res)=> {
-                showmsg(res)
-            }).fail(()=>failure("Failed, you are offline"));
-
-        }
-
-        function change_password() {
-            var old_pass = $("input[name='password_old']").val();
-            var pass = $("input[name='password']").val();
-            var pass_confirm = $("input[name='password_confirm']").val();
-            $.post("api.php?method=change_password",{id:id,password_old:old_pass,password:pass,password_confirm:pass_confirm}, (res)=>showmsg(res));
+            },function(err) {
+                alert("Something went wrong, you are most likely offline");
+            });
         }
 
 
-
-        function change(item) {
-
-        }
-
-        function change_permissions() {
-            let member = $("input[name='member']").is(":checked");
-            let alumni = $("input[name='alumni']").is(":checked");
-            let director = $("input[name='director']").is(":checked");
-            let admin = $("input[name='admin']").is(":checked");
-            $.post("api.php?method=change_permissions",{id:id,member:member,alumni:alumni,director:director,admin:admin}, (res)=>showmsg(res));
-        }
     </script>
 {% endblock %}
