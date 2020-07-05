@@ -20,6 +20,7 @@
             <span class="col align-self-end">
             Search
             <input class="form-control" onchange="changepage({{ 1 }},$(this).val())" value="{{ searchval }}" type="search">
+                <button onclick="changepage({{ 1 }},$('input[type=search]').val())" type="button" class="button btn-primary">Search</button>
         </span>
         </div>
         <div class="row">

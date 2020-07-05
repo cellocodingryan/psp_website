@@ -4,7 +4,13 @@
             {% for nav in navvars.navitems %}
                 {% if nav.group == true %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        {% set currentgroup = false %}
+                        {% for i in nav.navs %}
+                        {% if navvars.current==i.href %}
+                            {% set currentgroup = true %}
+                            {% endif %}
+                        {% endfor %}
+                        <a class="nav-link dropdown-toggle {%if currentgroup %}current{% endif %}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                            aria-expanded="false">{{ nav.name }}</a>
                             <div class="dropdown-menu">
                                 {% for groupnav in nav.navs %}
