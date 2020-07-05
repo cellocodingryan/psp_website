@@ -141,6 +141,9 @@ header("Location: Instruction_Videos.php");
 //order_form
 
 if (isset($_POST['priority'])) {
+    if ($_SESSION['u_rank'] < 2) {
+        die("Invalid Permissions");
+    }
 
 	set_priority($_POST['video_id'],$_POST['priority']);
 
