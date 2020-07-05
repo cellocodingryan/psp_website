@@ -73,6 +73,33 @@ if (isset($_GET['method'])) {
                     $response->add_attr("new_val",$phones[$phonenum][$type]);
                 }
             }
+            if (isset($_POST['address_line_1'])) {
+                $user->set_address($_POST['address_line_1'],"address_line_1");
+                $res = $user->get_address()["address_line_1"];
+                $response->add_attr("new_val",$res);
+            }
+            if (isset($_POST['city'])) {
+                $user->set_address($_POST['city'],"city");
+                $res = $user->get_address()["city"];
+                $response->add_attr("new_val",$res);
+            }
+            if (isset($_POST['state'])) {
+                $user->set_address($_POST['state'],"state");
+                $res = $user->get_address()["state"];
+                $response->add_attr("new_val",$res);
+            }
+            if (isset($_POST['zipcode'])) {
+                $user->set_address($_POST['zipcode'],"zipcode");
+                $res = $user->get_address()["zipcode"];
+                $response->add_attr("new_val",$res);
+            }
+            
+            if (isset($_POST['address_line_2'])) {
+                $user->set_address($_POST['address_line_2'],"address_line_2");
+                $res = $user->get_address()["address_line_2"];
+                $response->add_attr("new_val",$res);
+            }
+            
             
             echo $response;
             

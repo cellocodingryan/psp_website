@@ -28,5 +28,6 @@ echo $twig->render("profile.twig",[
     "member"=>$user->has_rank("member"),
     "alumni"=>$user->has_rank("alumni"),
     "director"=>$user->has_rank("director"),
+    "address"=>$user->get_address()
 
 ]);

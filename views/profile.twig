@@ -82,7 +82,7 @@
                                                                 <div class="form-group">
                                                                         <div class="row">
                                                                             <div class="col-md-10 col-8">
-                                                                                <input class="form-control inline" name="emails" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
+                                                                                <input class="form-control " name="emails" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
 
                                                                             </div>
                                                                             <div class="col-md-2 col-3">
@@ -138,6 +138,30 @@
                                                                 {% endif %}
 
                                                             </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address</label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address Line 1 <input onchange="change_single(this)" class="form-control" value="{{ address.address_line_1 }}" type="text" name="address_line_1"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address Line 2 <input onchange="change_single(this)" class="form-control" value="{{ address.address_line_2 }}" type="text" name="address_line_2"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>City <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.city }}" name="city"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>State <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.state }}" name="state"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>zipcode <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.zipcode }}" name="zipcode"> </label>
+
                                                         </div>
 
 
@@ -276,6 +300,8 @@
             let name = $(which).attr("name");
             let val = $(which).val();
             $.post("api.php?method=edit_profile",{id:id,[name]:val},function(res) {
+                res = JSON.parse(res);
+
                 if (res.status == 200) {
                     $(which).val(res.new_val);
                 }else if (res.status == 401) {
@@ -283,8 +309,6 @@
                 } else {
                     alert("Something went wrong");
                 }
-            },function(err) {
-                alert("Something went wrong, you are most likely offline");
             });
         }
         function change_multiple(which) {
@@ -307,6 +331,22 @@
             },function(err) {
                 alert("Something went wrong, you are most likely offline");
             });
+        }
+
+        function change_password() {
+            var old_pass = $("input[name='password_old']").val();
+            var pass = $("input[name='password']").val();
+            var pass_confirm = $("input[name='password_confirm']").val();
+            $.post("api.php?method=change_password",{id:id,password_old:old_pass,password:pass,password_confirm:pass_confirm}, (res)=>showmsg(res));
+        }
+
+
+        function change_permissions() {
+            let member = $("input[name='member']").is(":checked");
+            let alumni = $("input[name='alumni']").is(":checked");
+            let director = $("input[name='director']").is(":checked");
+            let admin = $("input[name='admin']").is(":checked");
+            $.post("api.php?method=change_permissions",{id:id,member:member,alumni:alumni,director:director,admin:admin}, (res)=>showmsg(res));
         }
 
 

@@ -41,6 +41,7 @@ class user
             $this->lastname = $row['user_last'];
             $this->email = $row['user_email'];
             $this->emails = $row['user_email_all'];
+            $this->address = $row['address'];
             $this->username = $row['user_uid'];
             $this->phones = $row['user_phone'];
             $this->rank = $row['user_rank'];
@@ -186,7 +187,23 @@ class user
         $this->phones = json_encode($phones_);
         return $phonenum;
     }
-    
+
+    public function set_address($value,$type) {
+        $address = json_decode($this->address,true);
+        if ($address == null) {
+            $address = ["address_line_1"=>"","address_line_2"=>"","city"=>"","state"=>"","zipcode"=>""];
+        }
+        $address[$type] = $value;
+        $this->address = json_encode($address);
+        $this->set_val("address",json_encode($address));
+    }
+    public function get_address() {
+        $address = json_decode($this->address,true);
+        if ($address == null) {
+            $address = ["address_line_1"=>"","address_line_2"=>"","city"=>"","state"=>"","zipcode"=>""];
+        }
+        return $address;
+    }
     private function set_val($param,$value) {
         try {
             $db = db::getdb();
@@ -349,6 +366,7 @@ class user
     private $id= null;
     private static $error = "";
     private $user_first= null;
+    private $address = null;
     private $lastname= null;
     private $email= null;
     private $emails= null;
