@@ -1,0 +1,86 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    {% include 'nav.twig' %}
+    <style>
+        span ul li:hover,.active {
+            background: #007bff;
+        }
+    </style>
+    <div class="container">
+        <div class="row form-inline">
+        <span class="col align-self-start">Show
+        <select onchange="changepage({{ currentpage+1 }})" class="form-control">
+            {% for i in [5,10,15,25,30] %}
+                <option {% if i == amount_per_page%}selected{% endif%} value="{{ i }}">{{ i }}</option>
+
+            {% endfor %}
+
+        </select>
+        </span>
+            <span class="col align-self-end">
+            Search
+            <input class="form-control" onchange="changepage({{ 1 }},$(this).val())" value="{{ searchval }}" type="search">
+        </span>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in contacts %}
+                    <tr>
+                        <th scope="row">{{ i.firstname }} {{ i.lastname }}</th>
+                        <td>
+                        {% for e in i.emails %}
+                            {{ e }}<br>
+                        {% endfor %}
+                        </td>
+                        <td>
+                        {% for p in i.phones %}
+                            {{ p[0] }}: {{ p[1] }}<br>
+                        {% endfor %}
+                        </td>
+                        <td>
+
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="row">
+            <span class="col">
+                <ul class="list-group list-group-horizontal justify-content-end">
+                    {% if currentpage+1 >3 %}
+                        {% set i = 1 %}
+                        <li {% if i != currentpage+1%} onclick="changepage({{ i }})" {% endif%} class="list-group-item {% if i == currentpage+1 %}active{% endif %}">{{ i }}</li>
+                    {% endif %}
+                    {% for i in currentpage-1..currentpage+3%}
+                        {% if i > 0 and (i -1)*amount_per_page <= total %}
+                            <li {% if i != currentpage+1%} onclick="changepage({{ i }})" {% endif%} class="list-group-item {% if i == currentpage+1 %}active{% endif %}">{{ i }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </span>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    function changepage(page,searchval = "") {
+        let selected = $("option:selected").val();
+
+        window.location.href = `contacts.php?page=${page}&amount_per_page=${selected}&search=${searchval}`;
+    }
+</script>
+{% endblock %}
