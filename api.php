@@ -14,7 +14,7 @@ if (isset($_GET['method'])) {
                 echo (new response(400,"invalid"));
                 exit();
             }
-            if ($_POST['id'] != user::get_current_user()->getid()) {
+            if ($_POST['id'] != user::get_current_user()->getid() && $_POST['id'] > -1) {
                 if (!user::get_current_user()->has_rank("director")) {
                     echo (new response(403, "Not Authorized"));
                     exit();

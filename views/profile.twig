@@ -304,12 +304,20 @@
 
                 if (res.status == 200) {
                     $(which).val(res.new_val);
-                }else if (res.status == 401) {
+                } else if (res.status == 401 || res.status == 403) {
                     location.reload();
                 } else {
                     alert("Something went wrong");
+                    console.log(res);
+
                 }
+            }).fail(function(err) {
+                alert("Something went wrong");
+                console.log(err);
             });
+        }
+        function reload() {
+            location.reload();
         }
         function change_multiple(which) {
             let name = $(which).attr("name");
@@ -323,13 +331,15 @@
                         $(which).parent().parent().remove();
                     }
                     $(which).parent().parent().children("input").attr("which_element",res.which_element);
-                } else if (res.status == 401) {
+                } else if (res.status == 401 || res.status == 403) {
                     location.reload();
                 } else {
                     alert("Something went wrong");
+                    console.log(res);
                 }
-            },function(err) {
-                alert("Something went wrong, you are most likely offline");
+            }).fail(function(err) {
+                alert("Something went wrong");
+                console.log(err);
             });
         }
 
