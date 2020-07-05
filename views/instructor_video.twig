@@ -23,7 +23,7 @@
         {% endif %}
         <h1>{{ video.video_name }}
         {% if canmodify %}
-            <a href="#" style="color: red;" onclick="delete_('video','{{ video.video_name }}')">[DELETE]</a>
+            <a href="#" style="color: red;" onclick="delete_practice_video('{{ video.video_name }}')">[DELETE]</a>
 
             <label>Change Priority </label>
             <form enctype="multipart/form-data" method="post" action="">
@@ -38,5 +38,9 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+    function delete_practice_video(videoname) {
+        window.location.href = "Instruction_Videos.php?delete="+videoname;
+    }
+</script>
 {% endblock %}

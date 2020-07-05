@@ -8,6 +8,21 @@ require_once 'models/upload.php';
 
 
 //practice video upload
+
+if (user::get_current_user()->has_rank("director")) {
+    if (isset($_GET['delete'])) {
+        $video_name = $_GET['delete'];
+        $res = mysqli_query(db::getdb(), "DELETE FROM practice_videos WHERE video_name='$video_name'");
+        $flash = new flash();
+        if (!$res) {
+            $flash->add_danger("Was not able to delete :( ");
+        } else {
+            $flash->add_success($video_name." Deleted");
+        }
+        header("Location: Instruction_Videos.php");
+        exit();
+    }
+}
 $flash = new flash();
 if (isset($_POST['video_name'])) {
     //debug
@@ -16,7 +31,7 @@ if (isset($_POST['video_name'])) {
         $name = $_POST['video_name'];
     }
     $sql = "SELECT * FROM practice_videos WHERE video_name='$name'";
-    $result = $conn->query($sql);
+    $result = db::getdb()->query($sql);
     $worked = true;
     $error_message = "";
     if (mysqli_num_rows($result) > 0) {
@@ -33,7 +48,7 @@ if (isset($_POST['video_name'])) {
 
     $file = $_FILES['file']['name'];
     $sql = "SELECT * FROM practice_videos WHERE file_name='$file'";
-    $result = $conn->query($sql);
+    $result = db::getdb()->query($sql);
 
     if (mysqli_num_rows($result) > 0) {
         if (isset($_POST['replace'])) {
@@ -47,7 +62,7 @@ if (isset($_POST['video_name'])) {
     }
 
     $sql = "INSERT INTO practice_videos (video_name,file_name) VALUES ('$name','$file')";
-    $result = mysqli_query($conn,$sql);
+    $result = mysqli_query(db::getdb(),$sql);
 
 
 
@@ -82,7 +97,7 @@ if (isset($_POST['video_name'])) {
 function set_priority($video_id,$order_id) {
 
 
-    $conn = $GLOBALS['conn'];
+    $conn = db::getdb();
 
     $result_rec = $conn->query("SELECT * FROM practice_videos WHERE order_id='$order_id'");
 
@@ -100,10 +115,12 @@ function set_priority($video_id,$order_id) {
         //echo 'WENT IN ';
         //echo $row_rec['video_id'] . 'xx' . ($order_id+1);
         set_priority($row_rec['video_id'],$order_id+1);
-        $row = $result->fetch_assoc();
 
     } else {
+        $flash = new flash();
+        $flash->add_success("Order Changed");
         header("Location: Instruction_Videos.php");
+        exit();
     }
 }
 
