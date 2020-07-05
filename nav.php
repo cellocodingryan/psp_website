@@ -38,7 +38,7 @@ $public_nav = [
 ];
 if (user::is_logged_in()) {
     if (user::get_current_user()->has_rank("member")) {
-        $public_nav[] = (new navitem("Members Area",null))->add_link("Video","Video.html");
+        $public_nav[] = (new navitem("Members Area",null))->add_link("Click Tracks, Videos, & MP3","Instruction_Videos.php");
     }
     if (user::get_current_user()->has_rank("director")) {
         $public_nav[] = (new navitem("Admin",null))->add_link("Modify Users","modify_users.php");

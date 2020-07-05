@@ -3,7 +3,9 @@ require_once 'vendor/autoload.php';
 require_once 'includes/dbh-inc.php';
 require_once 'models/user.php';
 require_once 'models/flash.php';
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 $loader = new \Twig\Loader\FilesystemLoader('views');
 $twig = new \Twig\Environment($loader, [
