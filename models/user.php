@@ -7,20 +7,33 @@ require_once 'models/flash.php';
 class user
 {
 
-    /**
-     * @var mixed|string
-     */
 
 
     private function __construct($id,$way)
     {
-        $id = mysqli_real_escape_string(db::getdb(), $id);
         $sql = null;
         if ($way == "id") {
+            $id = mysqli_real_escape_string(db::getdb(), $id);
             $sql = "SELECT * FROM users WHERE user_id=$id";
         } else if ($way == "usernameemail") {
+            $id = mysqli_real_escape_string(db::getdb(), $id);
             $sql = "SELECT * FROM users WHERE user_uid='$id' OR user_email='$id'";
-        } else {
+        } else if ($way == "prequery") {
+            $row = $id;
+            $this->id = $row['user_id'];
+            $this->user_first = $row['user_first'];
+            $this->lastname = $row['user_last'];
+            $this->email = $row['user_email'];
+            $this->emails = $row['user_email_all'];
+            $this->address = $row['address'];
+            $this->username = $row['user_uid'];
+            $this->phones = $row['user_phone'];
+            $this->rank = $row['user_rank'];
+            $this->password = $row['user_pwd'];
+            $this->found = true;
+            return;
+        }
+        else {
             die("Something went wrong");
         }
         $result = mysqli_query(db::getdb(), $sql);
@@ -57,6 +70,10 @@ class user
     }
     public static function get_by_uid($uid) {
         $user = new user($uid, "usernameemail");
+        return $user->username != null ? $user : false;
+    }
+    public static function get_by_prequery($row) {
+        $user = new user($row, "prequery");
         return $user->username != null ? $user : false;
     }
 
@@ -229,6 +246,7 @@ class user
     }
     public static function auth($level_required="loggedin") {
         $user = self::get_current_user();
+
         if (user::is_logged_in()) {
             if ($level_required == "loggedin") {
                 return true;

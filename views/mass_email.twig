@@ -1,0 +1,90 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    {% include 'nav.twig' %}
+    <h1 class="center">Mass Email</h1>
+    <form method="post" action="mass_email.php">
+        <input name="content" type="hidden">
+        <div class="container" onkeyup="update_content()">
+            <div class="row">
+
+                <div class="col">
+                    Subject:
+                    <input class="form-control" name="subject">
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    Content:
+
+                    <div id="editor2" style="height: 25vh">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="submit" class="form-control" value="Send Email">
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto ">
+                    <input type="checkbox" onclick="select_members(this)"><label>All Members</label><br>
+                    <input type="checkbox" onclick="select_alumni(this)"><label>All Alumni</label><br>
+                    <p>Members</p>
+                    {% for i in members %}
+                        <input type="checkbox" class="member" name="{{ i.id }}"><label>{{ i.name }}</label><br>
+                    {% endfor %}
+                    <p>Alumni</p>
+                    {% for i in alumni %}
+                        <input type="checkbox" class="alumni" name="{{ i.id }}"><label>{{ i.name }}</label><br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+
+        var quill2 = new Quill('#editor2', {
+            theme: 'snow'
+        });
+
+        function select_members(which) {
+            if ($(which).is(":checked")) {
+                $(".member").prop('checked',true)
+            } else {
+                $(".member").prop('checked',false)
+
+            }
+        }
+        function select_alumni(which) {
+            if ($(which).is(":checked")) {
+                $(".alumni").prop('checked',true)
+
+            } else {
+                $(".alumni").prop('checked',false)
+
+            }
+        }
+        function quillGetHTML(inputDelta) {
+            var tempCont = document.createElement("div");
+            (new Quill(tempCont)).setContents(inputDelta);
+            return tempCont.getElementsByClassName("ql-editor")[0].innerHTML;
+        }
+        function update_content() {
+            var content = quill2.getContents();
+            console.log(quillGetHTML(content))
+            $("input[name='content']").val(quillGetHTML(content))
+        }
+
+    </script>
+
+{% endblock %}
