@@ -1,0 +1,46 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <h1>{{ title }}</h1>
+    <iframe style="width: 100vw;height: 70vh" src="fileserver.php?folder={{ folder }}&file={{ options[0] }}.pdf"></iframe>
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <select onchange="change_part(this)">
+                    {% for i in options %}
+                    <option >{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <a href="fileserver.php?download&folder={{ folder }}&file={{ options[0] }}.pdf" class="btn btn-primary" download>Download</a>
+                {% if canedit %}
+                    <a href="fileserver.php?delete=true&folder={{ folder }}&file={{ options[0] }}" class="btn btn-danger">Delete</a>
+                    <h5>Upload new</h5>
+                    <form class="form-inline" method="post" action="">
+                        {% if file == 'practice_part.php' %}
+                            Name: <input class="form-control" name="name">
+                        {% endif %}
+                        {% if file == 'schedule.php' %}
+                            Custom Name: <input class="form-control" name="custom_name">
+                            Date: <input type="date" class="form-control" name="name">
+                        {% endif %}
+
+                        <input name="image" type="file">
+                        <input type="submit">
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function change_part(which) {
+            window.location.replace('{{ file }}?part_name='+$(which).children("option:selected").text())
+        }
+    </script>
+{% endblock %}

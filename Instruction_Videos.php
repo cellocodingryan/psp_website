@@ -26,6 +26,7 @@ if (user::get_current_user()->has_rank("director")) {
 $flash = new flash();
 if (isset($_POST['video_name'])) {
     //debug
+    user::auth("director");
     $name = "nameless";
     if (isset($_POST['video_name'])) {
         $name = $_POST['video_name'];

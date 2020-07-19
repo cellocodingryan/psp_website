@@ -41,7 +41,9 @@ if (user::is_logged_in()) {
         $public_nav[] = (new navitem("Members Area",null))->
         add_link("Click Tracks, Videos, & MP3","Instruction_Videos.php")->
         add_link("Contacts","contacts.php")->
-        add_link("Mass Email","mass_email.php");
+        add_link("Mass Email","mass_email.php")->
+        add_link("Practice Parts","practice_part.php")->
+        add_link("Schedule","schedule.php");
     }
     if (user::get_current_user()->has_rank("director")) {
         $public_nav[] = (new navitem("Admin",null))->add_link("Modify Users","modify_users.php");
