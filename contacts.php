@@ -1,41 +1,39 @@
 <?php
 require_once 'init.php';
+require_once 'models/pagesearch.php';
 $sql = "SELECT * FROM users";
 $result = db::getdb()->query($sql);
 $users = [];
 $page = 0;
 if (isset($_GET['page'])) {
-    $page = $_GET['page']-1;
+    $page = $_GET['page'];
 }
 
 $amount_per_page = 10;
 if (isset($_GET['amount_per_page'])) {
     $amount_per_page = $_GET['amount_per_page'];
 }
+
 $searchval = "";
+$test = 0;
 while($row = $result->fetch_assoc()) {
-    if (isset($_GET['search']) && $_GET['search'] != "") {
-        $searchval = $_GET['search'];
-        $found = false;
-        foreach($row as $k=>$v) {
-            if (strpos($v,$searchval) !== false) {
-                $found = true;
-            }
-        }
-        if (!$found) {
-            continue;
-        }
-    }
     $users[] = [
         "firstname"=>$row['user_first'],
         "lastname"=>$row['user_last'],
         "emails"=>json_decode($row['user_email_all']),
         "phones"=>json_decode($row['user_phone'])
     ];
+    ++$test;
 }
-
-
-echo $twig->render("contacts.twig",["navvars"=>$navvars,"contacts"=>array_slice($users,$page*$amount_per_page,$amount_per_page),"currentpage"=>$page,"amount_per_page"=>$amount_per_page,"total"=>mysqli_num_rows($result),"searchval"=>$searchval]);
+//var_dump($test);
+//var_dump(count($users));
+$pagesearch = new pagesearch($users,5,$amount_per_page);
+if (isset($_GET['search'])) {
+    $searchval = $_GET['search'];
+    $pagesearch->search($searchval);
+}
+$pagesearch->set_page($page);
+echo $twig->render("contacts.twig",["navvars"=>$navvars,"contacts"=>$pagesearch->get_array(),"amount_per_page"=>$amount_per_page,"currentpage"=>$page,"pageoptions"=>$pagesearch->get_page_options(),"searchval"=>$searchval]);
 exit();
 ?>
 
