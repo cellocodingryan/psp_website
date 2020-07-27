@@ -1,27 +1,47 @@
 <?php
+
 require_once 'models/upload.php';
 require_once 'models/user.php';
+session_start();
 require_once 'models/flash.php';
-if (isset($_POST['image']) && isset($_POST['name'])) {
-    user::auth("director");
-    upload::uploadftp($_FILES['image']['tmp_name'],"public_html/practice_parts/".$_POST['name']);
+
+if (isset($_FILES['image']) && isset($_POST['name'])) {
     $flash = new flash();
-    $flash->add_success("File uploaded");
-    $file_name= $_POST['name'];
-    $sql = "INSERT INTO practice_part (practice_part_date) VALUES ('$file_name')";
-    mysqli_query(db::getdb(),$sql);
-    header("Location: practice_part.php?part_name=".$_POST['name']);
-    exit();
+    var_dump($_FILES['image']);
+    if ($_POST['name'] == "" || !is_array($_FILES['image'])) {
+        $flash->add_warning("Name or File missing");
+    } else {
+        user::auth("director");
+        if (!upload::uploadftp($_FILES['image']['tmp_name'],"public_html/practice_parts/".$_POST['name'])) {
+            $flash->add_danger("Something went wrong");
+        } else {
+            $flash->add_success("File uploaded");
+            $file_name= $_POST['name'];
+            $sql = "INSERT INTO practice_part (practice_part_date) VALUES ('$file_name')";
+            mysqli_query(db::getdb(),$sql);
+        }
+
+
+        header("Location: practice_part.php?part_name=".$_POST['name']);
+        exit();
+    }
+
 }
 if (isset($_GET['delete'])) {
     user::auth("director");
-    $file_name= $_POST['name'];
     $flash = new flash();
-    if (mysqli_query(db::getdb(),"DELETE FROM practice_part WHERE practice_part_date = '$file_name'")) {
-        $flash->add_success("Gone");
-    } else {
+    if (!isset($_GET['name'])) {
         $flash->add_danger("Something went wrong");
+    } else {
+        $file_name= $_GET['name'];
+
+        if (mysqli_query(db::getdb(),"DELETE FROM practice_part WHERE practice_part_date = '$file_name'")) {
+            $flash->add_success("Gone");
+        } else {
+            $flash->add_danger("Something went wrong");
+        }
     }
+
     header("Location: practice_part.php");
     exit();
 

@@ -4,13 +4,16 @@
 class upload
 {
     public static function uploadftp($local_file, $remote_file) {
-        $connection = ftp_connect($server);
         $server = getenv('serverip');
+        $connection = ftp_connect($server);
+        error_log(getenv("ftpusername"));
+        $password = getenv("ftppassword");
         $username = getenv('ftpusername');
         // login
         if (@ftp_login($connection, $username, $password)){
             // successfully connected
         } else {
+            error_log("Not logged in :(");
             return false;
         }
 

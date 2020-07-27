@@ -3,7 +3,6 @@ require_once 'models/user.php';
 session_start();
 require_once 'models/video_server.php';
 user::auth("member");
-error_log("file ...: ".$_GET['file']);
 if (explode(".",$_GET['file'])[1] == "pdf") {
 
 // We'll be outputting a PDF

@@ -1,6 +1,7 @@
 <?php
 require_once 'models/upload.php';
 require_once 'models/user.php';
+session_start();
 require_once 'models/flash.php';
 if (isset($_POST['image']) && (isset($_POST['name']) || isset($_POST['custom_name']))) {
     user::auth("director");
@@ -18,14 +19,14 @@ if (isset($_POST['image']) && (isset($_POST['name']) || isset($_POST['custom_nam
 }
 if (isset($_GET['delete'])) {
     user::auth("director");
-    $file_name= $_POST['name'];
+    $file_name= explode("---",$_GET['name'])[0];
     $flash = new flash();
     if (mysqli_query(db::getdb(),"DELETE FROM schedule WHERE Schedule_date = '$file_name'")) {
         $flash->add_success("Gone");
     } else {
         $flash->add_danger("Something went wrong");
     }
-    header("Location: practice_part.php");
+    header("Location: schedule.php");
     exit();
 
 

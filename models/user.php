@@ -394,3 +394,6 @@ class user
     private $logged_in;
 
 }
+if (!isset($_SESSION)) {
+
+}
