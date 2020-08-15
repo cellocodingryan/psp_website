@@ -40,7 +40,7 @@ if (isset($_POST['video_name'])) {
 
         if (isset($_POST['replace'])) {
             $sql = "DELETE FROM practice_videos WHERE video_name='$name'";
-            $result = mysqli_query($conn,$sql);
+            $result = mysqli_query(db::getdb(),$sql);
         } else {
             $error_message = "Video name exists";
             $worked = false;
@@ -55,7 +55,7 @@ if (isset($_POST['video_name'])) {
     if (mysqli_num_rows($result) > 0) {
         if (isset($_POST['replace'])) {
             $sql = "DELETE FROM practice_videos WHERE file_name='$file'";
-            $result = mysqli_query($conn,$sql);
+            $result = mysqli_query(db::getdb(),$sql);
         } else {
             $error_message = "file name exists";
             $worked = false;

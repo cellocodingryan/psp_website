@@ -2,45 +2,47 @@
 
 {% block body %}
     {% include 'nav.twig' %}
-    {% if canmodify %}
-        <h6>Upload New Practice Track</h6>
-        <form enctype="multipart/form-data" method="post" action="">
-            <input type="hidden" name="MAX_FILE_SIZE" value="50000000000000000000000">
-            Video Name <br>
-            <input type="text" placeholder="video name" required name="video_name"><br>
-
-            File <br>
-            <input type="file" name="file">
-            <input type="checkbox" name="replace"><label>Replace</label>
-            <input type="submit" name="submit" value="Upload File">
-        </form>
-
-    {% endif %}
-
-    {% for video in videos %}
+    <div class="container">
         {% if canmodify %}
+            <h6>Upload New Practice Track</h6>
+            <form enctype="multipart/form-data" method="post" action="">
+                <input type="hidden" name="MAX_FILE_SIZE" value="50000000000000000000000">
+                Video Name <br>
+                <input type="text" placeholder="video name" required name="video_name"><br>
+
+                File <br>
+                <input type="file" name="file">
+                <input type="checkbox" name="replace"><label>Replace</label>
+                <input type="submit" name="submit" value="Upload File">
+            </form>
 
         {% endif %}
-        <h1>{{ video.video_name }}
-        {% if canmodify %}
-            <a href="#" style="color: red;" onclick="delete_practice_video('{{ video.video_name }}')">[DELETE]</a>
 
-            <label>Change Priority </label>
-            <form enctype="multipart/form-data" method="post" action="">
-                <input type="hidden" name="video_id" value="{{video.video_id}}">
-                <input type="number" name="priority" value="{{ video.video_order }}">
-                <input type="submit" value="update">
-            </form>
+        {% for video in videos %}
+            {% if canmodify %}
+
             {% endif %}
-        </h1>
-        <video controlsList="nodownload" onplay="add_info('play', '{{ video.video_name }}' )" onpause="add_info('pause', ' {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="100%" controls> </video>
-    {% endfor %}
+            <h1>{{ video.video_name }}
+                {% if canmodify %}
+                    <a href="#" style="color: red;" onclick="delete_practice_video('{{ video.video_name }}')">[DELETE]</a>
+
+                    <label>Change Priority </label>
+                    <form enctype="multipart/form-data" method="post" action="">
+                        <input type="hidden" name="video_id" value="{{video.video_id}}">
+                        <input type="number" name="priority" value="{{ video.video_order }}">
+                        <input type="submit" value="update">
+                    </form>
+                {% endif %}
+            </h1>
+            <video controlsList="nodownload" onplay="add_info('play', '{{ video.video_name }}' )" onpause="add_info('pause', ' {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="100%" controls> </video>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block script %}
-<script>
-    function delete_practice_video(videoname) {
-        window.location.href = "Instruction_Videos.php?delete="+videoname;
-    }
-</script>
+    <script>
+        function delete_practice_video(videoname) {
+            window.location.href = "Instruction_Videos.php?delete="+videoname;
+        }
+    </script>
 {% endblock %}

@@ -112,7 +112,7 @@
                                                                                 <span >Name</span>
                                                                             </div>
                                                                             <div class="col-md-4 col-sm-9 col-9">
-                                                                                <input class="form-control inline" name="phones_name" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="user@example.com">
+                                                                                <input class="form-control inline" name="phones_name" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="Dad's phone">
                                                                             </div>
                                                                             <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
                                                                                 <label>Number</label>
@@ -295,7 +295,9 @@
         function remove(which) {
             $(which).parent().parent().children("").children("input").val("");
             $(which).parent().parent().children("").children("input").trigger("change");
+            $(which).parent().parent().parent().remove();
         }
+
         function change_single(which) {
             let name = $(which).attr("name");
             let val = $(which).val();
@@ -323,14 +325,23 @@
             let name = $(which).attr("name");
             let val = $(which).val();
             let which_element = $(which).attr("which_element");
+            $(which).parent().parent().children().children("input").attr("disabled",true);
+
+            if (val == "" && which_element == -1) {
+                $(which).parent().parent().parent().remove();
+                return;
+            }
             $.post("api.php?method=edit_profile",{id,[name]:val,which_element},function(res) {
                 res = JSON.parse(res);
                 if (res.status == 200) {
                     $(which).val(res.new_val);
                     if (res.which_element == -1) {
-                        $(which).parent().parent().remove();
+                        alert("test")
+                        $(which).parent().parent().parent().remove();
                     }
-                    $(which).parent().parent().children("input").attr("which_element",res.which_element);
+                    console.log(res);
+                    $(which).parent().parent().children().children("input").attr("which_element",res.which_element);
+                    $(which).parent().parent().children().children("input").attr("disabled",false);
                 } else if (res.status == 401 || res.status == 403) {
                     location.reload();
                 } else {
