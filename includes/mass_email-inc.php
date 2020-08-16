@@ -54,7 +54,7 @@ if (strlen($_POST['subject']) > 0) {
     $subject = $_POST['subject'];
 }
 if ($attachment) {
-    $worked = send_mail($emails_to_send, $subject, $message,"../email_attachment/".$file_name);
+    $worked = send_mail($emails_to_send, $subject, $message,"../../../email_attachment/".$file_name);
 } else {
     $worked = send_mail($emails_to_send, $subject, $message);
 }
