@@ -1,7 +1,8 @@
 <?php
 require_once "models/user.php";
 session_start();
-require_once 'includes/dbh-inc.php';
+require_once 'models/db.php';
+
 require_once 'models/response.php';
 if (isset($_GET['method'])) {
     switch ($_GET['method']) {
@@ -160,6 +161,7 @@ if (isset($_GET['method'])) {
             }
             echo (new response(200, "Success"));
             break;
+
         default:
     }
 }

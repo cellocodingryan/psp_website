@@ -1,0 +1,71 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    {% include 'nav.twig' %}
+    <style>
+        span ul li:hover,.active {
+            background: #007bff;
+        }
+    </style>
+    <div class="container">
+        <div class="row form-inline">
+        <span class="col align-self-start">Show
+        <select onchange="changepage({{ currentpage+1 }})" class="form-control">
+            {% for i in [5,10,15,25,30] %}
+                <option {% if i == amount_per_page%}selected{% endif%} value="{{ i }}">{{ i }}</option>
+
+            {% endfor %}
+
+        </select>
+        </span>
+            <span class="col align-self-end">
+            Search
+            <input class="form-control" onchange="changepage({{ 0 }},$(this).val())" value="{{ searchval }}" type="search">
+                <button onclick="changepage({{ 0 }},$('input[type=search]').val())" type="button" class="button btn-primary">Search</button>
+        </span>
+        </div>
+
+        <div class="row" style="overflow-x: auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">TimeStamp</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Stat</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in stats %}
+                    <tr>
+                        <th scope="row">{{ i.stats_datetime }}</th>
+                        <td>{{ i.user_id }}</td>
+                        <td>{{ i.user_stat }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <span class="col">
+                <ul class="list-group list-group-horizontal justify-content-end">
+
+                    {% for i in pageoptions%}
+                        <li {% if i != currentpage%} onclick="changepage({{ i }})" {% endif%} class="list-group-item {% if i == currentpage %}active{% endif %}">{{ i+1 }}</li>
+                    {% endfor %}
+                </ul>
+            </span>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function changepage(page,searchval = "{{ searchval }}") {
+            let selected = $("option:selected").val();
+
+            window.location.href = `User_Stats.php?page=${page}&amount_per_page=${selected}&search=${searchval}`;
+        }
+    </script>
+{% endblock %}

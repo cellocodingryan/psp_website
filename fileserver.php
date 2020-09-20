@@ -13,7 +13,7 @@ if (explode(".",$_GET['file'])[1] == "pdf") {
         header('Content-Disposition: attachment; filename="'.$_GET['file'].'"');
     }
 
-    readfile("{$_GET['folder']}/{$_GET['file']}");
+    readfile(getenv("filelocation_prefix")."{$_GET['folder']}/{$_GET['file']}");
 
     exit();
 }

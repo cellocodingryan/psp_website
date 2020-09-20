@@ -13,9 +13,9 @@ class db {
     private function __construct() {
         $this->db = new mysqli(
             getenv('dbservername'),
-        getenv('dbusernname'),
-         getenv('dbpassword'),
-        getenv('dbName')
+            getenv('dbusernname'),
+            getenv('dbpassword'),
+            getenv('dbName')
         );
     }
     public static function getdb() {
@@ -27,4 +27,3 @@ class db {
     public static $instance;
     public $db;
 }
-

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'includes/dbh-inc.php';
+require_once 'models/db.php';
 require_once 'models/response.php';
 require_once 'models/flash.php';
 
@@ -14,7 +14,7 @@ class user
         $sql = null;
         if ($way == "id") {
             $id = mysqli_real_escape_string(db::getdb(), $id);
-            $sql = "SELECT * FROM users WHERE user_id=$id";
+            $sql = "SELECT * FROM users WHERE user_id='$id'";
         } else if ($way == "usernameemail") {
             $id = mysqli_real_escape_string(db::getdb(), $id);
             $sql = "SELECT * FROM users WHERE user_uid='$id' OR user_email='$id'";

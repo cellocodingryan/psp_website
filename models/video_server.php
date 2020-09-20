@@ -12,7 +12,7 @@ class video_server
 
     function __construct($filePath)
     {
-        $this->path = $filePath;
+        $this->path = getenv("filelocation_prefix").$filePath;
     }
 
     /**

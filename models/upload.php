@@ -17,7 +17,7 @@ class upload
             return false;
         }
 
-        if (!ftp_put($connection, $remote_file, $local_file, FTP_BINARY)) {
+        if (!ftp_put($connection, getenv("filelocation_prefix").$remote_file, $local_file, FTP_BINARY)) {
             return false;
         }
         ftp_close($connection);

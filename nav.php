@@ -1,5 +1,6 @@
 <?php
 require_once 'models/user.php';
+require_once 'models/stats.php';
 class navitem {
     public function __construct($name,$href)
     {
@@ -37,6 +38,7 @@ $public_nav = [
 
 ];
 if (user::is_logged_in()) {
+    stats::add_stat("User entered ".basename($_SERVER["SCRIPT_FILENAME"], '.php'),user::get_current_user()->getid());
     if (user::get_current_user()->has_rank("member")) {
         $public_nav[] = (new navitem("Members Area",null))->
         add_link("Click Tracks, Videos, & MP3","Instruction_Videos.php")->
@@ -46,7 +48,8 @@ if (user::is_logged_in()) {
         add_link("Schedule","schedule.php");
     }
     if (user::get_current_user()->has_rank("director")) {
-        $public_nav[] = (new navitem("Admin",null))->add_link("Modify Users","modify_users.php");
+        $public_nav[] = (new navitem("Admin",null))->add_link("Modify Users","modify_users.php")
+        ->add_link("User Stats","User_Stats.php");
     }
 
 
@@ -60,6 +63,7 @@ $login_nav = [
     new navitem("Create Account","create_account.php")
 ];
 if (user::is_logged_in()) {
+
     $login_nav = [
         (new navitem("Welcome ".user::get_current_user()->get_firstname(),"#"))->add_link("Profile","profile.php")->add_link("Log out","logout.php")
     ];

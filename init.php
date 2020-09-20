@@ -1,6 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
-require_once 'includes/dbh-inc.php';
+require_once 'models/db.php';
 require_once 'models/user.php';
 require_once 'models/flash.php';
 if (!isset($_SESSION)) {
