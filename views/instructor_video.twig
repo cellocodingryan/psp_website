@@ -34,7 +34,7 @@
                     </form>
                 {% endif %}
             </h1>
-            <video controlsList="nodownload" onplay="add_info('play', '{{ video.video_name }}' )" onpause="add_info('pause', ' {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="100%" controls> </video>
+            <video controlsList="nodownload" onplay="stat('play {{ video.video_name }}' )" onpause="stat('pause {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="100%" controls> </video>
         {% endfor %}
     </div>
 {% endblock %}
@@ -45,4 +45,6 @@
             window.location.href = "Instruction_Videos.php?delete="+videoname;
         }
     </script>
+    <script src="js/stats.js"></script>
+
 {% endblock %}

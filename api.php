@@ -140,7 +140,7 @@ if (isset($_GET['method'])) {
                 die(new response(401,"invalid (please refresh)"));
             }
             if (!isset($_POST['id'])) {
-                echo (new response(200,"invalid"));
+                die (new response(400,"invalid"));
             }
             if ($_POST['id'] == user::get_current_user()->getid()) {
                 $flash->add_danger("Invalid Permissions");
@@ -161,6 +161,15 @@ if (isset($_GET['method'])) {
             }
             echo (new response(200, "Success"));
             break;
+        case "add_stat":
+            require_once 'models/stats.php';
+            if (!user::is_logged_in()) {
+                die (new response(400,"invalid"));
+            }
+            if (!isset($_POST['stat'])) {
+                die (new response(400,"invalid"));
+            }
+            stats::add_stat($_POST['stat'],user::get_current_user()->getid());
 
         default:
     }
