@@ -12,7 +12,7 @@ if (isset($_FILES['image']) && isset($_POST['name'])) {
         $flash->add_warning("Name or File missing");
     } else {
         user::auth("director");
-        if (!upload::uploadftp($_FILES['image']['tmp_name'],"public_html/practice_parts/".$_POST['name'])) {
+        if (!upload::uploadftp($_FILES['image']['tmp_name'],"practice_parts/".$_POST['name'])) {
             $flash->add_danger("Something went wrong");
         } else {
             $flash->add_success("File uploaded");
