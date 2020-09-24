@@ -8,7 +8,7 @@ if (isset($_POST['image']) && (isset($_POST['name']) || isset($_POST['custom_nam
     if (isset($_POST['custom_name'])) {
         $_POST['name'] = $_POST['custom_name'];
     }
-    upload::uploadftp($_FILES['image']['tmp_name'],"public_html/schedules/".$_POST['name']);
+    upload::uploadftp($_FILES['image']['tmp_name'],getenv("filelocation_prefix").$_POST['name']);
     $flash = new flash();
     $flash->add_success("File uploaded");
     $file_name= $_POST['name'];
