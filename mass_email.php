@@ -17,13 +17,19 @@ if (!$users) {
     die();
 }
 $email_ids = array();
+if ($send_email_now) {
+    $_POST[user::get_current_user()->getid()] = true;
+}
 foreach ($users as $i) {
     $current_user = user::get_by_prequery($i);
     if (!$current_user) {
         continue;
     }
     if (isset($_POST[$current_user->getid()])) {
-        $email_ids[] = $current_user;
+        if ($send_email_now) {
+            $email = new email($current_user,$_POST['subject'],$_POST['content']);
+            $email->send_email();
+        }
     }
     $next = ["id"=>$current_user->getid(),"name"=>$current_user->get_firstname() ." ".$current_user->get_lastname()];
 
@@ -44,6 +50,5 @@ if ($send_email_now) {
 }
 if ($send_email_now) {
 
-    $email = new email($email_ids,$_POST['subject'],$_POST['content']);
-    $email->send_email();
+
 }

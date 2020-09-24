@@ -49,6 +49,7 @@ class email
             $replytoemails = user::get_current_user()->get_all_emails();
             foreach ($replytoemails as $e) {
                 $mail->addReplyTo($e);
+                $mail->addCC($e);
             }
             if ($this->attachment != null) {
                 $mail->addAttachment($this->attachment);
