@@ -1,12 +1,11 @@
 <?php
 
-
+require_once 'config/passwords.php';
 class upload
 {
     public static function uploadftp($local_file, $remote_file) {
         $server = getenv('serverip');
         $connection = ftp_connect($server);
-        error_log(getenv("ftpusername"));
         $password = getenv("ftppassword");
         $username = getenv('ftpusername');
         // login
@@ -17,7 +16,9 @@ class upload
             return false;
         }
 
-        if (!ftp_put($connection, getenv("filelocation_prefix").$remote_file, $local_file, FTP_BINARY)) {
+        if (!ftp_put($connection, getenv("uploadlocation_prefix").$remote_file,
+
+            $local_file, FTP_BINARY)) {
             return false;
         }
         ftp_close($connection);

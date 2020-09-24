@@ -26,14 +26,14 @@
                         <a href="{{ file }}?delete=true&folder={{ folder }}&name={{ options[0] }}" class="btn btn-danger">Delete</a>
                     {% endif %}
                     <h5>Upload new</h5>
-                    <form class="form-inline"method="post"  enctype="multipart/form-data"  action="">
+                    <form class="form-inline" method="post"  enctype="multipart/form-data"  action="">
 
                         {% if file == 'practice_part.php' %}
-                            Name: <input class="form-control" name="name">
+                            Name: <input class="form-control" required name="name">
                         {% endif %}
                         {% if file == 'schedule.php' %}
-                            Custom Name: <input class="form-control" name="custom_name">
-                            Date: <input type="date" class="form-control" name="name">
+                            Custom Name: <input class="form-control" required name="custom_name">
+                            Date: <input type="date" class="form-control" required name="date">
                         {% endif %}
 
                         <input name="image" type="file">

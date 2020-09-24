@@ -74,7 +74,7 @@ if (isset($_POST['video_name'])) {
 
 
 
-        $connected = upload::uploadftp($_FILES['file']['tmp_name'],getenv("filelocation_prefix").$_FILES['file']['name']);
+        $connected = upload::uploadftp($_FILES['file']['tmp_name'],"practice_video/".$_FILES['file']['name']);
         if (!$connected || $_FILES['file']['error'] != 0) {
             $worked = false;
             if (!$connected) {

@@ -10,7 +10,7 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-$amount_per_page = 10;
+$amount_per_page = 30;
 if (isset($_GET['amount_per_page'])) {
     $amount_per_page = $_GET['amount_per_page'];
 }
