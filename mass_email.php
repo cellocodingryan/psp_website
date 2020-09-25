@@ -20,16 +20,15 @@ $email_ids = array();
 if ($send_email_now) {
     $_POST[user::get_current_user()->getid()] = true;
 }
+$_POST['content'] .= "<br><br><br><a href='https://percussionscholars.com/beta/mass_email.php'>Click Here to send a mass email (reply all)</a>";
+
 foreach ($users as $i) {
     $current_user = user::get_by_prequery($i);
     if (!$current_user) {
         continue;
     }
     if (isset($_POST[$current_user->getid()])) {
-        if ($send_email_now) {
-            $email = new email($current_user->get_all_emails(),$_POST['subject'],$_POST['content']);
-            $email->send_email();
-        }
+        $email_ids[] = $current_user;
     }
     $next = ["id"=>$current_user->getid(),"name"=>$current_user->get_firstname() ." ".$current_user->get_lastname()];
 
@@ -50,5 +49,6 @@ if ($send_email_now) {
 }
 if ($send_email_now) {
 
-
+    $email = new email($email_ids,$_POST['subject'],$_POST['content']);
+    $email->send_email();
 }

@@ -17,14 +17,16 @@ class email
      */
     public function __construct($email_ids,$subject,$content)
     {
+        error_log("test");
         foreach ($email_ids as $e) {
+            error_log("test");
             $this->email_ids[] = $e;
         }
         $this->subject = $subject;
         $this->content = $content;
     }
     public function send_email() {
-
+        error_log($this->email_ids);
         foreach($this->email_ids as $id) {
             $this->send($id);
         }
