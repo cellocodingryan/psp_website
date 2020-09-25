@@ -140,6 +140,10 @@ if (user::get_current_user()->has_rank("director")) {
 
 
 $sql = "SELECT * FROM practice_videos ORDER BY order_id ASC";
+if (isset($_GET['video_name'])) {
+    $video_name = mysqli_escape_string(db::getdb(),$_GET['video_name']);
+    $sql = "SELECT * FROM practice_videos WHERE video_id='$video_name'";
+}
 $result = db::getdb()->query($sql);
 $videos = [];
 if ($result->num_rows > 0) {

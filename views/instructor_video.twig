@@ -22,7 +22,8 @@
             {% if canmodify %}
 
             {% endif %}
-            <h1>{{ video.video_name }}
+            <h1>
+                {% if videos|length == 1 %}{{ video.video_name }}{% endif %}
                 {% if canmodify %}
                     <a href="#" style="color: red;" onclick="delete_practice_video('{{ video.video_name }}')">[DELETE]</a>
 
@@ -34,7 +35,12 @@
                     </form>
                 {% endif %}
             </h1>
-            <video controlsList="nodownload" onplay="stat('play {{ video.video_name }}' )" onpause="stat('pause {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="100%" controls> </video>
+            {% if videos|length == 1 %}
+                <a style="font-size: 35px;" href="Instruction_Videos.php">Go Back</a><br>
+            <video controlsList="nodownload" style="width: 50vw;" onplay="stat('play {{ video.video_name }}' )" onpause="stat('pause {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="40%" controls> </video>
+            {% else %}
+                <a style="font-size: 35px" href="Instruction_Videos.php?video_name={{ video.video_id }}">{{ video.video_name }}</a><br>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
