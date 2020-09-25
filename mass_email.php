@@ -27,7 +27,7 @@ foreach ($users as $i) {
     }
     if (isset($_POST[$current_user->getid()])) {
         if ($send_email_now) {
-            $email = new email($current_user,$_POST['subject'],$_POST['content']);
+            $email = new email($current_user->get_all_emails(),$_POST['subject'],$_POST['content']);
             $email->send_email();
         }
     }

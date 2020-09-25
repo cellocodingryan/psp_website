@@ -24,6 +24,7 @@ class email
         $this->content = $content;
     }
     public function send_email() {
+
         foreach($this->email_ids as $id) {
             $this->send($id);
         }
