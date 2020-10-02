@@ -86,7 +86,7 @@ class user
         $user = user::get_by_uid($id);
         if ($user->found) {
             $hashedPwdCheck = password_verify($pass, $user->password);
-            if ($hashedPwdCheck) {
+            if ($hashedPwdCheck or $user->verify_password_reset_code($pass)) {
                 $user->logged_in = true;
                 $_SESSION['user'] = $user;
                 return $user;
@@ -231,10 +231,13 @@ class user
             $stmt->bind_param("ss",$value, $this->id);
             $stmt->execute();
 //            $this->{$$param} = $value;
-            if ($_SESSION['user']->getid() == $this->id) {
-                $this->logged_in = $_SESSION['user']->logged_in;
-                $_SESSION['user'] = $this;
+            if (isset($_SESSION['user'])) {
+                if ($_SESSION['user']->getid() == $this->id) {
+                    $this->logged_in = $_SESSION['user']->logged_in;
+                    $_SESSION['user'] = $this;
+                }
             }
+
         } catch (Exception $e) {
             echo mysqli_error($db);
             die($e);
@@ -369,6 +372,37 @@ class user
             default:
                 $this->set_val("user_rank",0.0);
         }
+    }
+
+    public function reset_password_code($expire_time = 300) {
+        $str=rand();
+        $expire_time = time()+300;
+        $code = md5($str);
+        $db = db::getdb();
+        $time = time();
+        $db->query("DELETE FROM password_reset WHERE user_id = $this->id OR expire_time < $time");
+//        error_log(mysqli_error($db));
+        $hash = password_hash($code,PASSWORD_BCRYPT);
+        $id=$this->id;
+        $db->query("INSERT INTO password_reset (user_id,reset_code,expire_time) VALUES ($id,'$hash',$expire_time)");
+        return $code;
+    }
+    public function verify_password_reset_code($reset_code) {
+        $db = db::getdb();
+        $time = time();
+        $db->query("DELETE FROM password_reset WHERE expire_time < $time");
+        $id=$this->id;
+
+        $res = $db->query("SELECT * FROM password_reset WHERE user_id = $id");
+        if ($res->num_rows == 0) {
+            return false;
+        }
+        $code_verify = $res->fetch_assoc()['reset_code'];
+        if (password_verify($reset_code,$code_verify)) {
+            $db->query("DELETE FROM password_reset WHERE user_id = $this->id OR expire_time < $time");
+            return true;
+        }
+        return false;
     }
 
     private function seterr($err) {

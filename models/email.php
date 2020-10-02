@@ -17,16 +17,13 @@ class email
      */
     public function __construct($email_ids,$subject,$content)
     {
-        error_log("test");
         foreach ($email_ids as $e) {
-            error_log("test");
             $this->email_ids[] = $e;
         }
         $this->subject = $subject;
         $this->content = $content;
     }
     public function send_email() {
-        error_log($this->email_ids);
         foreach($this->email_ids as $id) {
             $this->send($id);
         }
@@ -45,14 +42,15 @@ class email
 
             $emails = $id->get_all_emails();
             foreach ($emails as $e) {
-                error_log($e);
                 $mail->addAddress($e);
             }
             $mail->setFrom('new-info@percussionscholars.com', "PSP Website");
-            $replytoemails = user::get_current_user()->get_all_emails();
-            foreach ($replytoemails as $e) {
-                $mail->addReplyTo($e);
-                $mail->addCC($e);
+            if (user::is_logged_in()) {
+                $replytoemails = user::get_current_user()->get_all_emails();
+                foreach ($replytoemails as $e) {
+                    $mail->addReplyTo($e);
+                    $mail->addCC($e);
+                }
             }
             if ($this->attachment != null) {
                 $mail->addAttachment($this->attachment);
@@ -60,11 +58,10 @@ class email
             $mail->isHTML(true);
             $mail->Subject = $this->subject;
             $mail->Body = $this->content;
-
             $mail->send();
 
         } catch (phpmailerException $e) {
-
+            error_log($e);
         }
     }
     private $subject;

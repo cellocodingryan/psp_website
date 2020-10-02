@@ -52,6 +52,28 @@ if (isset($_POST)) {
         $lastpage = basename($_SERVER["SCRIPT_FILENAME"], '.php').".php";
         header("Location: $lastpage");
         exit();
+    } else if (isset($_POST['username']) && isset($_POST['resetpasswordrequest'])) {
+        $user = user::get_by_uid($_POST['username']);
+        if (!$user) {
+            $flash->add_danger("username does not exist");
+            $lastpage = basename($_SERVER["SCRIPT_FILENAME"], '.php').".php";
+            header("Location: resetpassword.php");
+            exit();
+        }
+        $code = $user->reset_password_code();
+        require_once 'models/email.php';
+        $id = $user->getid();
+
+        $_SESSION['username_for_password_reset'] = $_POST['username'];
+        $url = getenv("url");
+        $email = "Here is your password reest code that you requested. <br><a href='$url/resetpassword.php?code=$code&code_sent'> Click here </a><br><br>Code: $code";
+        $email = new email([$user],"Your password code",$email);
+        $email->send_email();
+        $flash->add_success("Check your email for code");
+        $lastpage = basename($_SERVER["SCRIPT_FILENAME"], '.php').".php";
+        header("Location: resetpassword.php?code_sent");
+
+        exit();
     }
 }
 

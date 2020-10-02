@@ -4,7 +4,7 @@ $send_email_now = isset($_POST['content']) && isset($_POST['subject']);
 
 require_once 'init.php';
 require_once 'models/email.php';
-session_start();
+
 user::auth("member");
 
 $users = mysqli_query(db::getdb(),"SELECT * FROM users");
@@ -20,8 +20,11 @@ $email_ids = array();
 if ($send_email_now) {
     $_POST[user::get_current_user()->getid()] = true;
 }
-$_POST['content'] .= "<br><br><br><a href='https://percussionscholars.com/beta/mass_email.php'>Click Here to send a mass email (reply all)</a>";
 
+if ($send_email_now) {
+    $_POST['content'] .= "<br><br><br><a href='https://percussionscholars.com/beta/mass_email.php'>Click Here to send a mass email (reply all)</a>";
+
+}
 foreach ($users as $i) {
     $current_user = user::get_by_prequery($i);
     if (!$current_user) {
