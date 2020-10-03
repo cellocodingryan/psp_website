@@ -141,7 +141,7 @@ class user
         /*
          * determine if this email is in use
          */
-        $testuser = user::get_by_uid($email);/
+        $testuser = user::get_by_uid($email);
 
         if ($testuser->getid() == user::get_current_user()->getid()) {
             $emails = json_decode($this->emails);
