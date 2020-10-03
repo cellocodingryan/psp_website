@@ -39,7 +39,10 @@ if (isset($_GET['method'])) {
 
             }
             if (isset($_POST['email'])) {
-                $user->set_primary_email($_POST['email']);
+                if (!$user->set_primary_email($_POST['email'])) {
+                    echo (new response(400,"Email already in use"));
+                    exit();
+                }
                 $response->add_attr("new_val",$user->get_email());
             }
             if (isset($_POST['emails'])) {

@@ -138,13 +138,22 @@ class user
         $this->lastname;
     }
     public function set_primary_email($email) {
+        /*
+         * determine if this email is in use
+         */
+        $testuser = user::get_by_uid($email);
+        if (!$testuser) {
+            $emails = json_decode($this->emails);
+            $emails[0] = $email;
+            $this->email = $emails[0];
+            $this->emails = json_encode($emails);
+            $this->set_val("user_email_all",json_encode($emails));
+            $this->set_val("user_email",$email);
+            return true;
+        } else {
+            return false;
+        }
 
-        $emails = json_decode($this->emails);
-        $emails[0] = $email;
-        $this->email = $emails[0];
-        $this->emails = json_encode($emails);
-        $this->set_val("user_email_all",json_encode($emails));
-        $this->set_val("user_email",$email);
     }
     public function set_emails($emails,$emailnum = -1) {
         $emails_ = json_decode($this->emails);
