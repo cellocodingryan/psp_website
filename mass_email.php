@@ -5,7 +5,7 @@ $send_email_now = isset($_POST['content']) && isset($_POST['subject']);
 require_once 'init.php';
 require_once 'models/email.php';
 
-user::auth("member","mass_email");
+user::auth("member","mass_email.php");
 
 $users = mysqli_query(db::getdb(),"SELECT * FROM users");
 
