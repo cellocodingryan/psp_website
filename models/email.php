@@ -23,6 +23,9 @@ class email
         $this->subject = $subject;
         $this->content = $content;
     }
+    public function add_attachment($attachment) {
+        $this->attachment = getenv("filelocation_prefix").$attachment;
+    }
     public function send_email() {
         foreach($this->email_ids as $id) {
             $this->send($id);
@@ -49,7 +52,7 @@ class email
                 $replytoemails = user::get_current_user()->get_all_emails();
                 foreach ($replytoemails as $e) {
                     $mail->addReplyTo($e);
-                    $mail->addCC($e);
+
                 }
             }
             if ($this->attachment != null) {
@@ -62,8 +65,10 @@ class email
 
         } catch (phpmailerException $e) {
             error_log($e);
+            $this->failed_emails += 1;
         }
     }
+    public $failed_emails = 0;
     private $subject;
     private $content;
     private $attachment = null;

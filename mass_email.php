@@ -4,7 +4,7 @@ $send_email_now = isset($_POST['content']) && isset($_POST['subject']);
 
 require_once 'init.php';
 require_once 'models/email.php';
-
+user::auth("admin");
 user::auth("member");
 
 $users = mysqli_query(db::getdb(),"SELECT * FROM users");
@@ -16,6 +16,9 @@ if (!$users) {
     echo mysqli_error(db::getdb());
     die();
 }
+
+
+
 $email_ids = array();
 if ($send_email_now) {
     $_POST[user::get_current_user()->getid()] = true;
@@ -43,15 +46,40 @@ foreach ($users as $i) {
 
 }
 if ($send_email_now) {
+
+    $email = new email($email_ids,$_POST['subject'],$_POST['content']);
+
+    if (isset($_FILES['emailattachment'])) {
+        if (isset($_POST['custom_name'])) {
+            $_POST['name'] = $_POST['custom_name'];
+        }
+        require_once 'models/upload.php';
+        $worked = upload::uploadftp($_FILES['emailattachment']['tmp_name'],
+            "email_attach/".$_FILES['emailattachment']['name']);
+        $flash = new flash();
+
+        if (!$worked) {
+            $flash->add_danger("Failed to Upload");
+            header("Location: mass_email.php");
+            exit();
+        }
+
+        $email->add_attachment("email_attach/".$_FILES['emailattachment']['name']);
+    }
+
+
+
+    $email->send_email();
     $flash = new flash();
-    $flash->add_success("Sending the Email Now!");
+    if ($email->failed_emails > 0) {
+        $flash->add_danger("at least " . $email->failed_emails . " emails failed to send");
+    } else {
+
+        $flash->add_success("Sending the Email Now!");
+    }
+
     header("Location: mass_email.php");
 } else {
 
     echo $twig->render("mass_email.twig",["members"=>$members,"alumni"=>$alumni,"navvars" => $navvars]);
-}
-if ($send_email_now) {
-
-    $email = new email($email_ids,$_POST['subject'],$_POST['content']);
-    $email->send_email();
 }
