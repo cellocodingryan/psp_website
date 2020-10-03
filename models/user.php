@@ -247,7 +247,7 @@ class user
     public static function logout() {
         unset($_SESSION['user']);
     }
-    public static function auth($level_required="loggedin") {
+    public static function auth($level_required="loggedin",$lastpage="index") {
         $user = self::get_current_user();
 
         if (user::is_logged_in()) {
@@ -258,9 +258,8 @@ class user
                 return true;
             }
         }
-        $flash = new flash();
-        $flash->add_warning("Invalid Permissions");
-        header("Location: index.php");
+
+        header("Location: login.php?lastpage=$lastpage");
         exit();
     }
     public function change_password($password,$password_confirm) {
