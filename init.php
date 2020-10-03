@@ -50,6 +50,7 @@ if (isset($_POST)) {
         }
         $flash->add_success("Welcome " . user::get_current_user()->get_firstname());
         $lastpage = basename($_SERVER["SCRIPT_FILENAME"], '.php').".php";
+
         header("Location: $lastpage");
         exit();
     } else if (isset($_POST['username']) && isset($_POST['resetpasswordrequest'])) {

@@ -64,7 +64,7 @@ if ($send_email_now) {
             exit();
         }
 
-        $email->add_attachment("email_attach/".$_FILES['emailattachment']['name']);
+        $email->add_attachment($_FILES['emailattachment']['name']);
     }
 
 

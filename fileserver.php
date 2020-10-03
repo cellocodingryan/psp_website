@@ -2,17 +2,45 @@
 require_once 'models/user.php';
 session_start();
 require_once 'models/video_server.php';
-user::auth("member");
-if (explode(".",$_GET['file'])[1] == "pdf") {
+$redirect_link = "viewemailattach.php";
+if (isset($_GET['file'])) {
+    $_SESSION['file'] = $_GET['file'];
+}
+if (isset($_GET['folder'])) {
+    $_SESSION['folder'] = $_GET['folder'];
+}
+
+if (isset($_GET['download'])) {
+    $redirect_link=$redirect_link."&download";
+}
+
+
+user::auth("member",$redirect_link);
+
+if (isset($_SESSION['folder'])) {
+    $_GET['folder'] = $_SESSION['folder'];
+    unset($_SESSION['folder']);
+}
+if (isset($_SESSION['file'])) {
+    $_GET['file'] = $_SESSION['file'];
+    unset($_SESSION['file']);
+}
+
+if (strtolower(explode(".",$_GET['file'])[1]) != "mp4" && strtolower(explode(".",$_GET['file'])[1]) != "mov") {
 
 // We'll be outputting a PDF
-    header('Content-type: application/pdf');
+    error_log('Content-type: '.filetype(getenv("filelocation_prefix")."{$_GET['folder']}/{$_GET['file']}"));
+    header('Content-type: '.filetype(getenv("filelocation_prefix")."{$_GET['folder']}/{$_GET['file']}"));
 
 // It will be called downloaded.pdf
-    if (isset($_GET['download'])) {
+    if (isset($_GET['download']) || isset($_SESSION['download'])) {
         header('Content-Disposition: attachment; filename="'.$_GET['file'].'"');
     }
-
+    
+    if (isset($_SESSION['download'])) {
+        unset($_SESSION['download']);
+    }
+    
     readfile(getenv("filelocation_prefix")."{$_GET['folder']}/{$_GET['file']}");
 
     exit();

@@ -43,8 +43,6 @@ class user
         }
         if (mysqli_num_rows($result) < 1) {
             return;
-        } else if (mysqli_num_rows($result) > 1) {
-            throw new \http\Exception\RuntimeException("DB ERROR -1");
         }
 
         if ($row = mysqli_fetch_assoc($result)) {
@@ -142,8 +140,14 @@ class user
          * determine if this email is in use
          */
         $testuser = user::get_by_uid($email);
-
-        if ($testuser->getid() == user::get_current_user()->getid()) {
+        $good = false;
+        if (!$testuser) {
+            $good= true;
+        }
+        if (!$good) {
+            $good = $testuser->getid() == $this->getid();
+        }
+        if ($good) {
             $emails = json_decode($this->emails);
             $emails[0] = $email;
             $this->email = $emails[0];
@@ -435,8 +439,5 @@ class user
     private $rank= null;
     private $found = false;
     private $logged_in;
-
-}
-if (!isset($_SESSION)) {
 
 }
