@@ -50,6 +50,7 @@ if (isset($_GET['method'])) {
                     echo (new response(400,"invalid"));
                     exit();
                 }
+                error_log("email: ". $_POST['emails']);
                 $emailnum = $user->set_emails($_POST['emails'],$_POST['which_element']);
                 $emails = $user->get_all_emails();
                 $response->add_attr("which_element",$emailnum);

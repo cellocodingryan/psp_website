@@ -1,11 +1,11 @@
 {% extends 'layout.twig' %}
 {% block body %}
     <style>
-        #additional_emails > .col > div:nth-child(2) {
-            display: none;
-        }#additional_phones > .col > div:nth-child(2) {
-            display: none;
-        }
+        /*#additional_emails > .col > div:nth-child(2) {*/
+        /*    display: none;*/
+        /*}#additional_phones > .col > div:nth-child(2) {*/
+        /*    display: none;*/
+        /*}*/
     </style>
     {% include 'nav.twig' %}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -344,10 +344,8 @@
                 if (res.status == 200) {
                     $(which).val(res.new_val);
                     if (res.which_element == -1) {
-                        alert("test")
                         $(which).parent().parent().parent().remove();
                     }
-                    console.log(res);
                     $(which).parent().parent().children().children("input").attr("which_element",res.which_element);
                     $(which).parent().parent().children().children("input").attr("disabled",false);
                 } else if (res.status == 401 || res.status == 403) {

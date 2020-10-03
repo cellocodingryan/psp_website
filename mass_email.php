@@ -71,8 +71,9 @@ if ($send_email_now) {
 
     $email->send_email();
     $flash = new flash();
-    if ($email->failed_emails > 0) {
-        $flash->add_danger("at least " . $email->failed_emails . " emails failed to send");
+    if (count($email->failed_emails) > 0) {
+        foreach($email->failed_emails as $f)
+        $flash->add_danger("Failed to send to " . $f);
     } else {
 
         $flash->add_success("Sending the Email Now!");

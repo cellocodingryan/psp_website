@@ -141,8 +141,9 @@ class user
         /*
          * determine if this email is in use
          */
-        $testuser = user::get_by_uid($email);
-        if (!$testuser) {
+        $testuser = user::get_by_uid($email);/
+
+        if ($testuser->getid() == user::get_current_user()->getid()) {
             $emails = json_decode($this->emails);
             $emails[0] = $email;
             $this->email = $emails[0];
@@ -180,7 +181,7 @@ class user
             }
         } else if ($emails != "") {
             if (in_array($emails,$emails_)) {
-                return null;
+
                 $flash = new flash();
                 $flash->add_danger("invalid");
                 die(new response(401,"invalid (please refresh)"));

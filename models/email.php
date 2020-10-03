@@ -63,12 +63,12 @@ class email
             $mail->Body = $this->content;
             $mail->send();
 
-        } catch (phpmailerException $e) {
+        } catch (Exception $e) {
             error_log($e);
-            $this->failed_emails += 1;
+            $this->failed_emails[] = $id->get_firstname() . " " . $id->get_lastname();
         }
     }
-    public $failed_emails = 0;
+    public $failed_emails = array();
     private $subject;
     private $content;
     private $attachment = null;
