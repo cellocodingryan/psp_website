@@ -49,7 +49,7 @@ if ($send_email_now) {
 
     $email = new email($email_ids,$_POST['subject'],$_POST['content']);
 
-    if (isset($_FILES['emailattachment'])) {
+    if (isset($_FILES['emailattachment']) && file_exists($_FILES['emailattachment']['tmp_name'])) {
         if (isset($_POST['custom_name'])) {
             $_POST['name'] = $_POST['custom_name'];
         }

@@ -2,7 +2,7 @@
 require 'init.php';
 if (user::is_logged_in()) {
     $flash = new flash();
-    $flash->add_warning("Invalid Permissions");
+    $flash->add_warning("Something went wrong :(");
     header("Location: index.php");
     exit();
 }

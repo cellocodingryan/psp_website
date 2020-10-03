@@ -25,8 +25,8 @@ class email
     }
     public function add_attachment($attachment) {
         $this->attachment = getenv("filelocation_prefix")."email_attach/".$attachment;
-        $url = getenv("url")."/fileserver.php?folder=email_attach&file=".$attachment;
-        $this->content .= "<br><br>Attachment Link <a href='$url'>Click here</a>";
+        $url = getenv("url")."/fileserver.php?download&folder=email_attach&file=".$attachment;
+        $this->content .= "<br><br>Attachment Link <a href='$url' download>Click here</a>";
     }
     public function send_email() {
         foreach($this->email_ids as $id) {

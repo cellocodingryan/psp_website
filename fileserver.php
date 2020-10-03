@@ -12,6 +12,7 @@ if (isset($_GET['folder'])) {
 
 if (isset($_GET['download'])) {
     $redirect_link=$redirect_link."&download";
+    $_SESSION['download'] = 1;
 }
 
 
