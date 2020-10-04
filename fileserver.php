@@ -18,14 +18,7 @@ if (isset($_GET['download'])) {
 
 user::auth("member",$redirect_link);
 
-if (isset($_SESSION['folder'])) {
-    $_GET['folder'] = $_SESSION['folder'];
-    unset($_SESSION['folder']);
-}
-if (isset($_SESSION['file'])) {
-    $_GET['file'] = $_SESSION['file'];
-    unset($_SESSION['file']);
-}
+
 
 if (strtolower(explode(".",$_GET['file'])[1]) != "mp4" && strtolower(explode(".",$_GET['file'])[1]) != "mov") {
 
@@ -44,7 +37,9 @@ if (strtolower(explode(".",$_GET['file'])[1]) != "mp4" && strtolower(explode("."
     
     readfile(getenv("filelocation_prefix")."{$_GET['folder']}/{$_GET['file']}");
 
-    exit();
+
+} else {
+
+    $v = new video_server("{$_GET['folder']}/{$_GET['file']}");
+    $v->start();
 }
-$v = new video_server("{$_GET['folder']}/{$_GET['file']}");
-$v->start();
