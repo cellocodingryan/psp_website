@@ -25,13 +25,32 @@ function formatphone($number) {
     }
     return $number;
 }
+function isJson($string) {
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
+}
+function getAddress($address) {
+
+    if (isJson($address)) {
+
+    } else {
+
+    }
+}
 while($row = $result->fetch_assoc()) {
     $users[] = [
         "firstname"=>$row['user_first'],
         "lastname"=>$row['user_last'],
         "emails"=>json_decode($row['user_email_all']),
-        "phones"=>formatphone(json_decode($row['user_phone']))
+        "phones"=>formatphone(json_decode($row['user_phone'])),
+        "address"=>[]
     ];
+    if (isJson($row['address'])) {
+        $address = json_decode($row["address"]);
+        foreach ($address as $v) {
+            $users[count($users)-1]["address"][] = $v;
+        }
+    }
     ++$test;
 }
 //var_dump($test);
