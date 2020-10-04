@@ -17,12 +17,19 @@ if (isset($_GET['amount_per_page'])) {
 
 $searchval = "";
 $test = 0;
+function formatphone($data) {
+    if(  preg_match( '/^\+\d(\d{3})(\d{3})(\d{4})$/', $data,  $matches ) )
+    {
+        $result = $matches[1] . '-' .$matches[2] . '-' . $matches[3];
+        return $result;
+    }
+}
 while($row = $result->fetch_assoc()) {
     $users[] = [
         "firstname"=>$row['user_first'],
         "lastname"=>$row['user_last'],
         "emails"=>json_decode($row['user_email_all']),
-        "phones"=>json_decode($row['user_phone'])
+        "phones"=>json_decode(formatphone($row['user_phone']))
     ];
     ++$test;
 }
@@ -34,6 +41,7 @@ if (isset($_GET['search'])) {
     $pagesearch->search($searchval);
 }
 $pagesearch->set_page($page);
+
 echo $twig->render("contacts.twig",["navvars"=>$navvars,"contacts"=>$pagesearch->get_array(),"amount_per_page"=>$amount_per_page,"currentpage"=>$page,"pageoptions"=>$pagesearch->get_page_options(),"searchval"=>$searchval]);
 exit();
 ?>
