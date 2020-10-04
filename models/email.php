@@ -24,6 +24,10 @@ class email
         $this->content = $content;
     }
     public function add_attachment($attachment) {
+        define('KB', 1024);
+        define('MB', 1048576);
+        define('GB', 1073741824);
+        define('TB', 1099511627776);
         if (filesize(getenv("filelocation_prefix")."email_attach/".$attachment) < 10000000) {
 
             $this->attachment = getenv("filelocation_prefix")."email_attach/".$attachment;
