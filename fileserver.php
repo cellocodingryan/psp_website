@@ -2,8 +2,12 @@
 require_once 'models/user.php';
 session_start();
 require_once 'models/video_server.php';
+if (!user::is_logged_in()) {
+    $flash = new flash();
+    $flash->add_info("After you login, click on the email link again");
+}
 user::auth("member");
-if (explode(".",$_GET['file'])[1] == "pdf") {
+if (strtolower(explode(".",$_GET['file'])[1]) != "mp4" && strtolower(explode(".",$_GET['file'])[1]) != "mov") {
 
 // We'll be outputting a PDF
     header('Content-type: application/pdf');

@@ -257,7 +257,7 @@ class user
     public static function logout() {
         unset($_SESSION['user']);
     }
-    public static function auth($level_required="loggedin",$lastpage="index") {
+    public static function auth($level_required="loggedin",$lastpage="index.php") {
         $user = self::get_current_user();
 
         if (user::is_logged_in()) {
