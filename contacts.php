@@ -17,19 +17,20 @@ if (isset($_GET['amount_per_page'])) {
 
 $searchval = "";
 $test = 0;
-function formatphone($data) {
-    if(  preg_match( '/^\+\d(\d{3})(\d{3})(\d{4})$/', $data,  $matches ) )
-    {
-        $result = $matches[1] . '-' .$matches[2] . '-' . $matches[3];
-        return $result;
+function formatphone($number) {
+    for ($i = 0;$i < count($number);++$i) {
+
+        $number[$i][1] = preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $number[$i][1]);
+
     }
+    return $number;
 }
 while($row = $result->fetch_assoc()) {
     $users[] = [
         "firstname"=>$row['user_first'],
         "lastname"=>$row['user_last'],
         "emails"=>json_decode($row['user_email_all']),
-        "phones"=>json_decode(formatphone($row['user_phone']))
+        "phones"=>formatphone(json_decode($row['user_phone']))
     ];
     ++$test;
 }
