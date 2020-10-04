@@ -3,36 +3,36 @@
     {% include 'nav.twig' %}
     <img class="about_image" src="images/About-us.jpg">
 
-{#    <div id="about_carousel" class="carousel slide" data-ride="carousel">#}
-{#        <ol class="carousel-indicators">#}
-{#            <li data-target="#about_carousel" data-slide-to="0" class="active"></li>#}
-{#            {% for i in 1..users|length %}#}
-{#                <li data-target="#about_carousel" data-slide-to="{{ i }}" class=""></li>#}
-{#            {% endfor %}#}
-{#        </ol>#}
-{#        <div class="carousel-inner">#}
-{#            {% set active = 'active' %}#}
-{#            {% for user in users %}#}
-{#                <div class="carousel-item {{ active }}">#}
-{#                    <img src="{{ user.src }}" class="d-block w-100">#}
-{#                    <div class="carousel-caption d-none d-md-block">#}
-{#                        <h5>{{ user.label }}</h5>#}
-{#                        <p>{{ user.description }}</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#                {% set active = '' %}#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        <a class="carousel-control-prev" href="#about_carousel" role="button" data-slide="prev">#}
-{#            <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
-{#            <span class="sr-only">Previous</span>#}
-{#        </a>#}
-{#        <a class="carousel-control-next" href="#about_carousel" role="button" data-slide="next">#}
-{#            <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
-{#            <span class="sr-only">Next</span>#}
-{#        </a>#}
+    <div id="about_carousel" class="carousel slide" style="width: 50%;margin: auto" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#about_carousel" data-slide-to="0" class="active"></li>
+            {% for i in 1..users|length %}
+                <li data-target="#about_carousel" data-slide-to="{{ i }}" class=""></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% set active = 'active' %}
+            {% for user in users %}
+                <div class="carousel-item {{ active }}">
+                    <img src="{{ user.src }}" class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{ user.label }}</h5>
+                        <p>{{ user.description }}</p>
+                    </div>
+                </div>
+                {% set active = '' %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#about_carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#about_carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
 
-{#    </div>#}
+    </div>
     <div class="about_body">
         <div class="about_tab container">
             <div class="row">
