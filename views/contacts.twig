@@ -39,23 +39,27 @@
                     <tr>
                         <th scope="row" >{{ i.firstname }} {{ i.lastname }}</th>
                         <td>
-                        {% for e in i.emails %}
-                            {{ e }}<br>
-                        {% endfor %}
-                        </td>
-                        <td>
-                        {% for p in i.phones %}
-                            {{ p[0] }}: {{ p[1] }}<br>
-                        {% endfor %}
-                        </td>
-                        <td>
-                            {% for j in i.address %}
-                                {% if j|length >0 %}
-                                {{ j }}
-                                    <br>
-                                {% endif %}
-
+                            {% for e in i.emails %}
+                                {{ e }}<br>
                             {% endfor %}
+                        </td>
+                        <td>
+                            {% for p in i.phones %}
+                                {{ p[0] }}: {{ p[1] }}<br>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if i.address is iterable %}
+                                {% for j in i.address %}
+                                    {% if j|length >0 %}
+                                        {{ j }}
+                                        <br>
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% else %}
+                                {{ i.address | raw }}
+                            {% endif %}
                         </td>
 
                     </tr>
@@ -69,7 +73,7 @@
                 <ul class="list-group list-group-horizontal justify-content-end">
 
                     {% for i in pageoptions%}
-                            <li {% if i != currentpage%} onclick="changepage({{ i }})" {% endif%} class="list-group-item {% if i == currentpage %}active{% endif %}">{{ i+1 }}</li>
+                        <li {% if i != currentpage%} onclick="changepage({{ i }})" {% endif%} class="list-group-item {% if i == currentpage %}active{% endif %}">{{ i+1 }}</li>
                     {% endfor %}
                 </ul>
             </span>
@@ -79,11 +83,11 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    function changepage(page,searchval = "") {
-        let selected = $("option:selected").val();
+    <script>
+        function changepage(page,searchval = "") {
+            let selected = $("option:selected").val();
 
-        window.location.href = `contacts.php?page=${page}&amount_per_page=${selected}&search=${searchval}`;
-    }
-</script>
+            window.location.href = `contacts.php?page=${page}&amount_per_page=${selected}&search=${searchval}`;
+        }
+    </script>
 {% endblock %}

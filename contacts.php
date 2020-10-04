@@ -50,6 +50,9 @@ while($row = $result->fetch_assoc()) {
         foreach ($address as $v) {
             $users[count($users)-1]["address"][] = $v;
         }
+    }else {
+        $users[count($users)-1]["address"] = $row['address'];
+
     }
     ++$test;
 }
