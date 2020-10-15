@@ -1,0 +1,106 @@
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto  nav-pills">
+            {% for nav in navvars.navitems %}
+                {% if nav.group == true %}
+                    <li class="nav-item dropdown">
+                        {% set currentgroup = false %}
+                        {% for i in nav.navs %}
+                        {% if navvars.current==i.href %}
+                            {% set currentgroup = true %}
+                            {% endif %}
+                        {% endfor %}
+                        <a class="nav-link dropdown-toggle {%if currentgroup %}current{% endif %}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ nav.name }}</a>
+                            <div class="dropdown-menu">
+                                {% for groupnav in nav.navs %}
+                                <a class="dropdown-item {% if navvars.current == groupnav.href %}current{% endif %}" href="{{ groupnav.href }}">{{ groupnav.name }}</a>
+                                {% endfor %}
+                            </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item mr-auto">
+                        <a href="{{ nav.href }}" class="nav-link {% if navvars.current == nav.href %}current{% endif %}">{{ nav.name }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+
+
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button"  data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto  nav-pills">
+            {% for nav in navvars.loginnav %}
+                {% if nav.group == true %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ nav.name }}</a>
+                        <div class="dropdown-menu">
+                            {% for groupnav in nav.navs %}
+                                <a class="dropdown-item {% if navvars.current == groupnav.href %}current{% endif %}" href="{{ groupnav.href }}">{{ groupnav.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item mr-auto">
+                        <a href="{{ nav.href }}?lastpage={{ navvars.current }}" class="nav-link {% if navvars.current == nav.href %}current{% endif %}">{{ nav.name }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+{% for i in navvars.msgs.primary %}
+<div class="alert alert-dismissible fade show alert-primary" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% for i in navvars.msgs.secondary %}
+<div class="alert alert-dismissible fade show alert-secondary" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% for i in navvars.msgs.success %}
+<div class="alert alert-dismissible fade show alert-success" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% for i in navvars.msgs.danger %}
+<div class="alert alert-dismissible fade show alert-danger" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% for i in navvars.msgs.warning %}
+<div class="alert alert-dismissible fade show alert-warning" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% for i in navvars.msgs.info %}
+<div class="alert alert-dismissible fade show alert-info" role="alert">
+    {{i}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}

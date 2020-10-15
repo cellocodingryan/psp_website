@@ -1,0 +1,381 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    <style>
+        #additional_emails > .col > div:nth-child(2) {
+            display: none;
+        }#additional_phones > .col > div:nth-child(2) {
+            display: none;
+        }
+    </style>
+    {% include 'nav.twig' %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div id="success">
+
+    </div>
+    <div id="failure">
+
+    </div>
+
+    <div class="container">
+        <div class="row flex-lg-nowrap">
+
+
+            <div class="col">
+                <div class="row">
+                    <div class="col mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="e-profile">
+                                    <div class="row">
+                                                                            <div class="col-12 col-sm-auto mb-3">
+                                                                                <div class="mx-auto" style="width: 140px;">
+                                                                                    <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+                                                                                        <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                        <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap"><span class="name">{{ firstname }}</span> <span class="lastname">{{ lastname }}</span></h4>
+                                                <p class="mb-0">@{{username}}</p>
+                                                {#                                            <div class="text-muted"><small>Last seen 2 hours ago</small></div>#}
+                                                {#                                            <div class="mt-2">#}
+                                                {#                                                <button class="btn btn-primary" type="button">#}
+                                                {#                                                    <i class="fa fa-fw fa-camera"></i>#}
+                                                {#                                                    <span>Change Photo</span>#}
+                                                {#                                                </button>#}
+                                                {#                                            </div>#}
+                                            </div>
+                                            <div class="text-center text-sm-right">
+                                                <span class="badge badge-secondary">{{ rank }}</span>
+                                                {#                                                <div class="text-muted"><small>Joined 09 Dec 2017</small></div>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                    </ul>
+                                    <div class="tab-content pt-3">
+                                        <div class="tab-pane active">
+                                            <form class="form" novalidate="">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>First Name</label>
+                                                                    <input class="form-control" type="text" onchange="change_single(this)" name="firstname" placeholder="John Smith" value="{{ firstname }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Username</label>
+                                                                    <input class="form-control" onchange="change_single(this)" type="text" name="lastname" onchange="change_single(this)" placeholder="johnny.s" value="{{ lastname }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input class="form-control" name="email" onchange="change_single(this)" type="text" value="{{ email }}" placeholder="user@example.com">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="additional_emails">
+                                                            <div class="col">
+                                                                <label>Additional Emails</label>
+                                                                {% for e in 0..additional_emails|length - 1 %}
+                                                                <div class="form-group">
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 col-8">
+                                                                                <input class="form-control " name="emails" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_emails[e] }}" placeholder="user@example.com">
+
+                                                                            </div>
+                                                                            <div class="col-md-2 col-3">
+                                                                                <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                {% endfor %}
+                                                                {% if additional_phones|length != 0 %}
+{#                                                                <div class="text-center">#}
+
+                                                                <button type="button" class="btn btn-primary" >Add Email</button>
+{#                                                                </div>#}
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="additional_phones">
+                                                            <div class="col">
+                                                                <label>Additional phones</label>
+                                                                {% for e in -1..additional_phones|length - 1 %}
+                                                                <div class="form-group">
+                                                                        <div class="row " style="justify-content: flex-start">
+                                                                            <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
+                                                                                <span >Name</span>
+                                                                            </div>
+                                                                            <div class="col-md-4 col-sm-9 col-9">
+                                                                                <input class="form-control inline" name="phones_name" onchange="change_multiple(this)" which_element="{{ e }}" type="text" value="{{ additional_phones[e][0] }}" placeholder="Dad's phone">
+                                                                            </div>
+                                                                            <div class="col-md-1 col-sm-3 col-3" style="display: flex;justify-content: flex-end;align-items: center">
+                                                                                <label>Number</label>
+                                                                            </div>
+                                                                            <div class="col-md-4 col-sm-5 col-5" >
+                                                                                <input class="form-control inline" name="phones_number" onchange="change_multiple(this)" which_element="{{ e }}" type="tel" value="{{ additional_phones[e][1] }}" placeholder="888-888-8888">
+
+                                                                            </div>
+
+                                                                            <div class="col-md-1 col-sm-1 col-1">
+                                                                                <button class="btn btn-danger" onclick="remove(this)" type="button">Delete</button>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                {% endfor %}
+                                                                {% if additional_phones|length != 0 %}
+{#                                                                    <div class="text-center">#}
+                                                                        <button type="button" class="btn btn-primary" style="margin: 0 auto !important;">Add phone</button>
+
+{#                                                                    </div>#}
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address</label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address Line 1 <input onchange="change_single(this)" class="form-control" value="{{ address.address_line_1 }}" type="text" name="address_line_1"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>Address Line 2 <input onchange="change_single(this)" class="form-control" value="{{ address.address_line_2 }}" type="text" name="address_line_2"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>City <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.city }}" name="city"> </label>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <label>State <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.state }}" name="state"> </label>
+
+                                                        </div>
+                                                        <div class="row">     
+                                                            <label>zipcode <input class="form-control" onchange="change_single(this)" type="text" value="{{ address.zipcode }}" name="zipcode"> </label>
+
+                                                        </div>
+
+
+
+
+{#                                                        <div class="row">#}
+{#                                                            <div class="col mb-3">#}
+{#                                                                <div class="form-group">#}
+{#                                                                    <label>About</label>#}
+{#                                                                    <textarea class="form-control" rows="5" placeholder="My Bio"></textarea>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <div class="mb-2"><b>Change Password</b></div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Current Password</label>
+                                                                    <input class="form-control"  type="password" name="password_old" placeholder="••••••">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>New Password</label>
+                                                                    <input required class="form-control" type="password" name="password" placeholder="••••••">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                                                                    <input required class="form-control" type="password" name="password_confirm" placeholder="••••••"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="button" onclick="change_password()" class="btn btn-primary" >Change Password</button>
+                                                        </div>
+
+                                                    </div>
+                                                    {% if can_change_perms %}
+                                                    <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                                                        <div class="mb-2"><b>Modify Permission</b></div>
+{#                                                        <div class="row" >#}
+{#                                                            <div class="col">#}
+{#                                                                <div class="form-group">#}
+{#                                                                    <label>Reject: <input type="checkbox" name="reject"></label>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Member: <input type="checkbox" {% if member%} checked {% endif%} name="member"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Alumni: <input type="checkbox" {% if alumni%} checked {% endif%} name="alumni"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Director: <input type="checkbox" {% if director%}checked{% endif%} name="director"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Admin: <input type="checkbox" {% if admin%}checked{% endif%} name="admin"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <button type="button" onclick="change_permissions()" class="btn btn-primary" >Change Permissions</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {% if can_change_perms %}
+            <a href="modify_users.php">Go Back</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const id = {{ userid }};
+        $("#additional_emails > div > button").click(()=>{
+            $("#additional_emails > div >div:last-of-type").clone().insertAfter("#additional_emails > div >  div:last-of-type")
+            $("#additional_emails > div >div:last-of-type input").val("").attr("which_element","-1");
+        });
+        $("#additional_phones > div > button").click(()=>{
+            $("#additional_phones > div >div:last-of-type").clone().insertAfter("#additional_phones > div >  div:last-of-type")
+            $("#additional_phones > div >div:last-of-type input").val("").attr("which_element","-1");
+        });
+
+        // $("input").change(function(e) {
+        //     $(this).css("background","green");
+        // }) ;
+
+        function remove(which) {
+            $(which).parent().parent().children("").children("input").val("");
+            $(which).parent().parent().children("").children("input").trigger("change");
+            $(which).parent().parent().parent().remove();
+        }
+
+        function change_single(which) {
+
+            let name = $(which).attr("name");
+            let val = $(which).val();
+            $.post("api.php?method=edit_profile",{id:id,[name]:val},function(res) {
+                res = JSON.parse(res);
+
+                if (res.status == 200) {
+                    $(which).val(res.new_val);
+                } else if (res.status == 401 || res.status == 403) {
+                    location.reload();
+                } else {
+                    alert("Something went wrong");
+                    console.log(res);
+
+                }
+            }).fail(function(err) {
+                alert("Something went wrong");
+                console.log(err);
+            });
+        }
+        function reload() {
+            location.reload();
+        }
+        function change_multiple(which) {
+            let name = $(which).attr("name");
+            let val = $(which).val();
+            let which_element = $(which).attr("which_element");
+            $(which).parent().parent().children().children("input").attr("disabled",true);
+
+            if (val == "" && which_element == -1) {
+                $(which).parent().parent().parent().remove();
+                return;
+            }
+            $.post("api.php?method=edit_profile",{id,[name]:val,which_element},function(res) {
+                res = JSON.parse(res);
+                if (res.status == 200) {
+                    $(which).val(res.new_val);
+                    if (res.which_element == -1) {
+                        $(which).parent().parent().parent().remove();
+                    }
+                    $(which).parent().parent().children().children("input").attr("which_element",res.which_element);
+                    $(which).parent().parent().children().children("input").attr("disabled",false);
+                } else if (res.status == 401 || res.status == 403) {
+                    location.reload();
+                } else {
+                    alert("Something went wrong");
+                    console.log(res);
+                }
+            }).fail(function(err) {
+                alert("Something went wrong");
+                console.log(err);
+            });
+        }
+
+        function change_password() {
+            var old_pass = $("input[name='password_old']").val();
+            var pass = $("input[name='password']").val();
+            var pass_confirm = $("input[name='password_confirm']").val();
+            $.post("api.php?method=change_password",{id:id,password_old:old_pass,password:pass,password_confirm:pass_confirm}, (res)=>showmsg(res));
+        }
+
+
+        function change_permissions() {
+            let member = $("input[name='member']").is(":checked");
+            let alumni = $("input[name='alumni']").is(":checked");
+            let director = $("input[name='director']").is(":checked");
+            let admin = $("input[name='admin']").is(":checked");
+            $.post("api.php?method=change_permissions",{id:id,member:member,alumni:alumni,director:director,admin:admin}, (res)=>showmsg(res));
+        }
+
+
+    </script>
+{% endblock %}

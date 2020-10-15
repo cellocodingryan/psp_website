@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <img class="bannerimage" src="images/video.png">
+    <div class="video_tab container">
+        <div class="d-flex align-items-center justify-content-center flex-wrap">
+            {% for src in videos %}
+                <div>
+                    <div class=" aspect-ratio">
+                        <iframe class="aspect-ratio-box-inside" src="{{ src }}" frameborder="0"  allowfullscreen></iframe>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <div class="container">
+        {% if canmodify %}
+            <h6>Upload New Practice Track</h6>
+            <form enctype="multipart/form-data" method="post" action="">
+                <input type="hidden" name="MAX_FILE_SIZE" value="50000000000000000000000">
+                Video Name <br>
+                <input type="text" placeholder="video name" required name="video_name"><br>
+
+                File <br>
+                <input type="file" name="file">
+                <input type="checkbox" name="replace"><label>Replace</label>
+                <input type="submit" name="submit" value="Upload File">
+            </form>
+
+        {% endif %}
+
+        {% for video in videos %}
+            {% if canmodify %}
+
+            {% endif %}
+            <h1>
+                {% if videos|length == 1 %}{{ video.video_name }}{% endif %}
+                {% if canmodify %}
+                    <a href="#" style="color: red;" onclick="delete_practice_video('{{ video.video_name }}')">[DELETE]</a>
+
+                    <label>Change Priority </label>
+                    <form enctype="multipart/form-data" method="post" action="">
+                        <input type="hidden" name="video_id" value="{{video.video_id}}">
+                        <input type="number" name="priority" value="{{ video.video_order }}">
+                        <input type="submit" value="update">
+                    </form>
+                {% endif %}
+            </h1>
+            {% if videos|length == 1 %}
+                <a style="font-size: 35px;" href="Instruction_Videos.php">Go Back</a><br>
+            <video controlsList="nodownload" style="width: 50vw;" onplay="stat('play {{ video.video_name }}' )" onpause="stat('pause {{ video.video_name }}' )" src="fileserver.php?folder=practice_video&file={{ video.file_name }}" width="40%" controls> </video>
+            {% else %}
+                <a style="font-size: 35px" href="Instruction_Videos.php?video_name={{ video.video_id }}">{{ video.video_name }}</a><br>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function delete_practice_video(videoname) {
+            window.location.href = "Instruction_Videos.php?delete="+videoname;
+        }
+    </script>
+    <script src="js/stats.js"></script>
+
+{% endblock %}

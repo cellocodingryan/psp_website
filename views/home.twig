@@ -1,0 +1,33 @@
+{% extends 'layout.twig' %}
+
+{% block header %}
+    <img src="images/banner.jpg">
+
+    {% include 'nav.twig' %}
+{% endblock %}
+{% block body %}
+<div class="welcome_article">
+    <h1>Welcome</h1>
+    <p>On behalf of <u>The Percussion Scholarship Group</u> we would like to welcome you to our official website. Feel free to check out our gallery and keep up with our upcoming events. We appreciate all of your support and hope you continue to enjoy our music.</p>
+</div>
+<div class="promo_video_container container no-gutters" style="width: 100%;max-width: 100%;">
+    <div class="row video_container">
+
+        <div class="col promo_videos promo_videos0">
+            <video height="100%" width="100%" controls="" poster="images/harry_potter.jpg" src="videos/harry_potter.mp4">
+
+            </video>
+        </div>
+        <div class="col promo_videos promo_videos1">
+            <video height="100%" width="100%" controls="" poster="images/Riverdance.jpg" src="videos/Riverdance.mp4">
+
+            </video>
+        </div>
+        <div class="col promo_videos promo_videos2">
+            <video height="100%" width="100%" controls="" poster="images/sorcerers_apprentice.jpg" src="videos/sorcerers_apprentice.mp4">
+
+            </video>
+        </div>
+    </div>
+</div>
+{% endblock %}

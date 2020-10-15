@@ -1,0 +1,11 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <ul>
+        {% for i in users %}
+            <li><a href="profile.php?id={{ i.user_id }}">{{ i.user_first }}</a> </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

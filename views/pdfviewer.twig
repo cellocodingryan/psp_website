@@ -1,0 +1,57 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'nav.twig' %}
+    <h1>{{ title }}</h1>
+    {% if options[0]|length > 0 and folder|length > 0%}
+        <iframe style="width: 100vw;height: 70vh" src="fileserver.php?folder={{ folder }}&file={{ options[0] }}.pdf"></iframe>
+    {% endif %}
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                {% if options|length > 0 %}
+                <select onchange="change_part(this)">
+                    {% for i in options %}
+                        <option >{{ i }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+                {% if options[0]|length > 0 and folder|length > 0%}
+                    <a href="fileserver.php?download&folder={{ folder }}&file={{ options[0] }}.pdf" class="btn btn-primary" download>Download</a>
+                {% endif %}
+                {% if canedit %}
+                    {% if options[0]|length > 0 and folder|length > 0%}
+                        <a href="{{ file }}?delete=true&folder={{ folder }}&name={{ options[0] }}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                    <h5>Upload new</h5>
+                    <form class="form-inline" method="post"  enctype="multipart/form-data"  action="">
+
+                        {% if file == 'practice_part.php' %}
+                            Name: <input class="form-control" required name="name">
+                        {% endif %}
+                        {% if file == 'schedule.php' %}
+                            Custom Name: <input class="form-control" required name="custom_name">
+                            Date: <input type="date" class="form-control" required name="date">
+                        {% endif %}
+
+                        <input name="image" type="file">
+                        <input type="submit">
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function change_part(which) {
+            window.location.replace('{{ file }}?part_name='+$(which).children("option:selected").text())
+        }
+    </script>
+    <script src="js/stats.js"></script>
+
+{% endblock %}
