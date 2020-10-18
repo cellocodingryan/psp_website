@@ -9,7 +9,7 @@
         .image {
             width: 100%;
             padding-top: 66.66%;
-            background: blue;
+            background: black;
             background-size: cover;
         }
 
@@ -29,7 +29,7 @@
                 <div class="carousel-item {{ active }}" >
 
                     <img src="profile_pics/{{ user.user_uid }}" onload="this.remove()" onerror="this.parentNode.remove()" class="d-block w-100 " >
-                    <div class="image" style='background-image: url("profile_pics/{{ user.user_uid }}")'></div>
+                    <div class="image" onload='this.style.backgroundImage = `url("fileserver.php?folder=profile_pics&file={{ user.user_uid }}")`' style='background-image: url("profile_pics/{{ user.user_uid }}")'></div>
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{ user.user_first}} {{ user.user_last }}</h5>
 {#                        <p>{{ user.description }}</p>#}
@@ -52,12 +52,12 @@
         <div class="about_tab container">
             <div class="row">
                 <div class="about_history col-md">
-                    <h1>Our History</h1>
+                    <h1>Our History</h1><br>
                     <p>Launched in 1995 under the direction of CSO percussionist Patricia Dash and Douglas Waddell, percussionist with Lyric Opera of Chicago, the Percussion Scholarship Program offers intensive, individual, weekly percussion instruction on a full scholarship basis. Participating students, all Chicago residents in grades three through twelve, are selected for the group through a rigorous application and personal interview process.
 
                         As an ensemble, the Percussion Scholarship Group has had numerous compositions arranged especially for them by nationally known artists. The group has performed at the Percussive Arts Society International Convention, performs twice annually at Symphony Center and has appeared at Macy's Day of Music, DePaul University, the Chicago Cultural Center, on WTTW, on WGN and WFMT radio, and as soloists with members of the Chicago Symphony Orchestra as part of CSO Youth Concerts, the Kraft Family Matinee Series and Welcome Yule! Concerts.</p>
                 </div>
-            </div>
+            </div><br>
                 <h1>About the Directors</h1>
             <br>
                 <div class="row">
