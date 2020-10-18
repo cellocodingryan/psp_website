@@ -112,7 +112,8 @@ class user
                 if ($password_confirm == $password) {
                     $hashedPwd = password_hash($password, PASSWORD_BCRYPT);
 //            insert the user into the database
-                    $sql = "INSERT INTO users (user_first, user_last, user_email, user_email_all, user_phone, user_uid, user_pwd, address, family, user_rank) VALUES ('$firstname', '$lastname', '$email', '[$email]', '[]', '$username', '$hashedPwd', '', '', '0');";
+                    $emailall = json_encode([$email]);
+                    $sql = "INSERT INTO users (user_first, user_last, user_email, user_email_all, user_phone, user_uid, user_pwd, address, family, user_rank) VALUES ('$firstname', '$lastname', '$email', '$emailall', '[]', '$username', '$hashedPwd', '', '', '0');";
                     $res = mysqli_query($db,$sql);
                     if (!$res) {
                         user::seterror(mysqli_error($db));
@@ -224,9 +225,14 @@ class user
     public function set_address($value,$type) {
         $address = json_decode($this->address,true);
         if ($address == null) {
-            $address = ["address_line_1"=>"","address_line_2"=>"","city"=>"","state"=>"","zipcode"=>""];
+            $address = str_replace("</div>","",$this->address);
+            $address = explode("<div>",$address);
+
+            $address = ["address_line_1"=>$address[1],"address_line_2"=>"","city"=>"$address[2]","state"=>"$address[3]","zipcode"=>"$address[4]"];
         }
-        $address[$type] = $value;
+        if ($value != " " && !strpos($value,"@")) {
+            $address[$type] = $value;
+        }
         $this->address = json_encode($address);
         $this->set_val("address",json_encode($address));
     }
@@ -346,9 +352,10 @@ class user
         }
     }
     public function get_all_emails() {
+
         $email_decode = json_decode($this->emails);
         if (count($email_decode) == 0) {
-            $email_decode[] = "";
+            $email_decode[] = $this->email!=null?$this->email:"";
         }
         return $email_decode;
     }

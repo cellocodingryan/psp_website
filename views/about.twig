@@ -2,22 +2,26 @@
 {% block body %}
     {% include 'nav.twig' %}
     <img class="about_image" src="images/About-us.jpg">
-
-    <div id="about_carousel" class="carousel slide" style="width: 50%;margin: auto" data-ride="carousel">
+{#    <style>#}
+{#        /*.carousel-inn*/#}
+{#    </style>#}
+    <div id="about_carousel" class="carousel slide" style="width: 50%;margin: auto;max-width: 900px" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#about_carousel" data-slide-to="0" class="active"></li>
-            {% for i in 1..users|length %}
-                <li data-target="#about_carousel" data-slide-to="{{ i }}" class=""></li>
+            {% for i in users %}
+                <li data-target="#about_carousel" data-slide-to="{{ loop.index -1}}" class=" {% if loop.index-1==0 %}active{% endif %}">
+                    <img src="profile_pics/{{ i.user_uid}}" onload="this.remove()" onerror="this.parentNode.remove()" class="d-block w-100 "  >
+                </li>
             {% endfor %}
         </ol>
         <div class="carousel-inner">
             {% set active = 'active' %}
             {% for user in users %}
-                <div class="carousel-item {{ active }}">
-                    <img src="{{ user.src }}" class="d-block w-100">
+                <div class="carousel-item {{ active }}" >
+
+                    <img src="profile_pics/{{ user.user_uid }}" onerror="this.parentNode.remove()" class="d-block w-100 " >
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>{{ user.label }}</h5>
-                        <p>{{ user.description }}</p>
+                        <h5>{{ user.user_first}} {{ user.user_last }}</h5>
+{#                        <p>{{ user.description }}</p>#}
                     </div>
                 </div>
                 {% set active = '' %}
@@ -44,6 +48,7 @@
                 </div>
             </div>
                 <h1>About the Directors</h1>
+            <br>
                 <div class="row">
                     <div class="col">
                         <h1>

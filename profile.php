@@ -4,16 +4,44 @@ require_once 'models/flash.php';
 user::auth();
 $user = user::get_current_user();
 $modify_rank = false;
+$flash = new flash();
 if (isset($_GET['id'])) {
-    user::auth("director");
     $user = user::get_by_id($_GET['id']);
-    if (!$user) {
-        $flash = new flash();
-        $flash->add_danger("Invalid ID");
-        header("Location: modify_users.php");
+    if (user::get_current_user()->getid() != $user->getid()) {
+
+
+        user::auth("director");
+        if (!$user) {
+
+            $flash->add_danger("Invalid ID");
+            header("Location: modify_users.php");
+        }
+        $modify_rank=true;
     }
-    $modify_rank=true;
 }
+if (isset($_FILES['profilepic'])) {
+    $username = $user->get_username();
+    $id = $user->getid();
+    $extension = pathinfo($_FILES['profilepic']['name'], PATHINFO_EXTENSION);
+    $size = filesize($_FILES['profilepic']['tmp_name']);
+    if ($size > 15000000) {
+        $flash->add_info("File is too big");
+    } else {
+        require_once "models/upload.php";
+        $worked = upload::uploadftp($_FILES['profilepic']['tmp_name'],"profile_pics/$username");
+
+        if ($worked) {
+            $flash->add_success("Uploaded");
+        } else {
+            $flash->add_danger("Failed to upload");
+        }
+
+    }
+    header("Location: profile.php?id=$id");
+    exit();
+
+}
+
 echo $twig->render("profile.twig",[
     "navvars"=>$navvars,
     "userid"=>$user->getid(),

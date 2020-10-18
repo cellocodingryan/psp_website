@@ -2,7 +2,7 @@
 require_once 'init.php';
 require_once 'models/pagesearch.php';
 user::auth("member");
-$sql = "SELECT * FROM users";
+$sql = "SELECT * FROM users WHERE user_rank > 0";
 $result = db::getdb()->query($sql);
 $users = [];
 $page = 0;
@@ -39,9 +39,10 @@ function getAddress($address) {
 }
 while($row = $result->fetch_assoc()) {
     $users[] = [
+        "username"=>$row['user_uid'],
         "firstname"=>$row['user_first'],
         "lastname"=>$row['user_last'],
-        "emails"=>json_decode($row['user_email_all']),
+        "emails"=>count(json_decode($row['user_email_all'])) > 0?json_decode($row['user_email_all']):$row['user_email'],
         "phones"=>formatphone(json_decode($row['user_phone'])),
         "address"=>[]
     ];

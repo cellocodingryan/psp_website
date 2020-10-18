@@ -28,6 +28,7 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
@@ -37,7 +38,10 @@
                 <tbody>
                 {% for i in contacts %}
                     <tr>
-                        <th scope="row" >{{ i.firstname }} {{ i.lastname }}</th>
+                        <th scope="row" style="max-width: 60px"  >
+                            <img style="width: 100%" src="profile_pics/{{ i.username }}" onerror="this.src='profile_pics/default'"/>
+                        </th>
+                        <td >{{ i.firstname }} {{ i.lastname }}</td>
                         <td>
                             {% for e in i.emails %}
                                 {{ e }}<br>

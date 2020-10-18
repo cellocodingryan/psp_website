@@ -4,7 +4,7 @@
     {% include 'nav.twig' %}
     <ul>
         {% for i in users %}
-            <li><a href="profile.php?id={{ i.user_id }}">{{ i.user_first }}</a> </li>
+            <li><a href="profile.php?id={{ i.user_id }}">{{ i.user_first }}</a> {% if i.user_rank == 0.00%}[HIDDEN]{% endif%} </li>
         {% endfor %}
     </ul>
 

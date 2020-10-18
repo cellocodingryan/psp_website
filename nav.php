@@ -49,7 +49,8 @@ if (user::is_logged_in()) {
     }
     if (user::get_current_user()->has_rank("director")) {
         $public_nav[] = (new navitem("Admin",null))->add_link("Modify Users","modify_users.php")
-        ->add_link("User Stats","User_Stats.php");
+        ->add_link("User Stats","User_Stats.php")
+        ->add_link("Generate account","generate_account.php");
     }
 
 

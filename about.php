@@ -1,6 +1,7 @@
 <?php
 
 require_once 'init.php';
+require_once 'models/db.php';
 class User_ {
     function __construct($src,$label,$description) {
         $this->src = $src;
@@ -37,6 +38,8 @@ $usersx = [
     new User_("member_images/Shumei.jpg","Shumei Gong",""),
 //    new User_("member_images/Lucia.jpg","Lucia Leon",""),
 ];
+$usersx = mysqli_query(db::getdb(),"SELECT user_uid, user_first, user_last FROM users WHERE user_rank > 0 and user_id > 1");
+
 echo $twig->render('about.twig', ['users' => $usersx,"navvars"=>$navvars]);
 //?>
 <!---->

@@ -6,7 +6,9 @@ require_once 'models/flash.php';
 if (!isset($_SESSION)) {
     session_start();
 }
-
+foreach($_POST as $k=>$v) {
+    $_POST[$k] = mysqli_escape_string(db::getdb(),$_POST[$k]);
+}
 $loader = new \Twig\Loader\FilesystemLoader('views');
 $twig = new \Twig\Environment($loader, [
     'debug' => true,

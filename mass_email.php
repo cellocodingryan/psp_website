@@ -7,7 +7,7 @@ require_once 'models/email.php';
 
 user::auth("member","mass_email.php");
 
-$users = mysqli_query(db::getdb(),"SELECT * FROM users");
+$users = mysqli_query(db::getdb(),"SELECT * FROM users WHERE user_rank > 0");
 
 $user_ids = [];
 $members = array();
