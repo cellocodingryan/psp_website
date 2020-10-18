@@ -5,6 +5,16 @@
 {#    <style>#}
 {#        /*.carousel-inn*/#}
 {#    </style>#}
+    <style>
+        .image {
+            width: 100%;
+            padding-top: 56.25%;
+            background: blue;
+            background-size: cover;
+        }
+
+    </style>
+
     <div id="about_carousel" class="carousel slide" style="width: 50%;margin: auto;max-width: 900px" data-ride="carousel">
         <ol class="carousel-indicators">
             {% for i in users %}
@@ -18,7 +28,8 @@
             {% for user in users %}
                 <div class="carousel-item {{ active }}" >
 
-                    <img src="profile_pics/{{ user.user_uid }}" onerror="this.parentNode.remove()" class="d-block w-100 " >
+                    <img src="profile_pics/{{ user.user_uid }}" onload="this.remove()" onerror="this.parentNode.remove()" class="d-block w-100 " >
+                    <div class="image" style='background-image: url("profile_pics/{{ user.user_uid }}")'></div>
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{ user.user_first}} {{ user.user_last }}</h5>
 {#                        <p>{{ user.description }}</p>#}
