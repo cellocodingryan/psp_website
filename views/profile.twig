@@ -30,7 +30,7 @@
                                         <div class="col-12 col-sm-auto mb-3">
                                             <div class="mx-auto" style="width: 140px;">
                                                 <div class="d-flex justify-content-center align-items-center rounded" style="background-color: rgb(233, 236, 239);">
-                                                    <img style="width: 100%" onload='this.style.backgroundImage = `url("fileserver.php?folder=profile_pics&file={{ username }}")`' src="profile_pics/{{ username }}" onerror="this.src='profile_pics/default'"/>
+                                                    <img style="width: 100%" src="fileserver.php?folder=profile_pics&file={{ username }}" onerror="this.src='profile_pics/default'"/>
 {#                                                    <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>#}
 
                                                 </div>
@@ -39,7 +39,8 @@
                                         <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                                             <div class="text-center text-sm-left mb-2 mb-sm-0">
                                                 <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap"><span class="name">{{ firstname }}</span> <span class="lastname">{{ lastname }}</span></h4>
-                                                <p class="mb-0">@{{username}}</p>
+                                                <input class="mb-0 username" name="username" value="{{username}}">
+                                                <button class="btn btn-primary" onclick="change_username()">Change Username</button>
 
                                                 {#                                                                                            <div class="text-muted"><small>Last seen 2 hours ago</small></div>#}
 
@@ -295,6 +296,11 @@
 
 {% block script %}
     <script>
+        function change_username() {
+
+            change_single(".username");
+        }
+
         const id = {{ userid }};
         $("#additional_emails > div > button").click(()=>{
             $("#additional_emails > div >div:last-of-type").clone().insertAfter("#additional_emails > div >  div:last-of-type")

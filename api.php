@@ -29,6 +29,12 @@ if (isset($_GET['method'])) {
             } else {
                 $user = user::get_by_id($_POST['id']);
             }
+
+            if (isset($_POST['username'])) {
+                $user->set_username($_POST['username']);
+                $response->add_attr("new_val",$user->get_username());
+            }
+
             if (isset($_POST['firstname'])) {
                 $user->set_firstname($_POST['firstname']);
                 $response->add_attr("new_val",$user->get_firstname());
@@ -50,7 +56,7 @@ if (isset($_GET['method'])) {
                     echo (new response(400,"invalid"));
                     exit();
                 }
-                error_log("email: ". $_POST['emails']);
+
                 $emailnum = $user->set_emails($_POST['emails'],$_POST['which_element']);
                 $emails = $user->get_all_emails();
                 $response->add_attr("which_element",$emailnum);

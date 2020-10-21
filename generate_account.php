@@ -7,7 +7,7 @@ user::auth("director");
 if (isset($_POST['email']) && isset($_POST['firstname']) && isset($_POST['lastname'])) {
     $password = md5(rand());
     $username = explode("@",$_POST['email'])[0];
-
+    error_log("username".$username);
     $count_try = 1;
     while (!user::create_account($username,$_POST['email'],$_POST['firstname'],$_POST['lastname'],$password,$password) && $count_try < 10) {
         $username.=$count_try;

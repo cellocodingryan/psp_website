@@ -97,6 +97,10 @@ class user
     }
     public static function create_account($username, $email, $firstname,$lastname,
                                           $password,$password_confirm) {
+        if( !preg_match('/[^A-Za-z0-9]+/i', $username)){ // Remove unwanted chars if you don't need to include all
+        }else{
+            return false;
+        }
         $db = db::getdb();
         $username = mysqli_real_escape_string($db,$username);
         $email = mysqli_real_escape_string($db,$email);
@@ -128,6 +132,17 @@ class user
         user::seterror("A user with that username already exists");
         return false;
 
+    }
+
+    public function set_username($username) {
+        if( !preg_match('/[^A-Za-z0-9]+/i', $username)){ // Remove unwanted chars if you don't need to include all
+
+            $testuser = user::get_by_uid($username);
+            if (!$testuser) {
+                $this->set_val("user_uid",$username);
+                $this->username = $username;
+            }
+        }
     }
 
     public function set_firstname($firstname) {

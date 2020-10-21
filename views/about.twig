@@ -16,13 +16,7 @@
     </style>
 
     <div id="about_carousel" class="carousel slide" style="width: 50%;margin: auto;max-width: 900px" data-ride="carousel">
-        <ol class="carousel-indicators">
-            {% for i in users %}
-                <li data-target="#about_carousel" data-slide-to="{{ loop.index -1}}" class=" {% if loop.index-1==0 %}active{% endif %}">
-                    <img src="profile_pics/{{ i.user_uid}}" onload="this.remove()" onerror="this.parentNode.remove()" class="d-block w-100 "  >
-                </li>
-            {% endfor %}
-        </ol>
+
         <div class="carousel-inner">
             {% set active = 'active' %}
             {% for user in users %}

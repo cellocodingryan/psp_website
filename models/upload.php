@@ -21,6 +21,9 @@ class upload
             $local_file, FTP_BINARY)) {
             return false;
         }
+        if (!file_exists(getenv("filelocation_prefix").$remote_file)) {
+            return false;
+        }
         ftp_close($connection);
         return true;
     }
