@@ -3,7 +3,7 @@ require 'init.php';
 
 user::auth("director");
 
-$users = mysqli_query(db::getdb(),"SELECT user_id,user_first,user_rank FROM users");
+$users = mysqli_query(db::getdb(),"SELECT user_id,user_first,user_last,user_rank FROM users");
 
 $user_ids = [];
 if (!$users) {
