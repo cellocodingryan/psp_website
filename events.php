@@ -1,6 +1,8 @@
 <?php
 require_once 'init.php';
-class events {
 
-}
+
+$events = mysqli_query(db::getdb(),"SELECT * FROM ")
+
+
 echo $twig->render('events.twig',["navvars"=>$navvars]);

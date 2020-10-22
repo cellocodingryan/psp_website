@@ -24,6 +24,16 @@ if (isset($_FILES['profilepic'])) {
     $id = $user->getid();
     $extension = pathinfo($_FILES['profilepic']['name'], PATHINFO_EXTENSION);
     $size = filesize($_FILES['profilepic']['tmp_name']);
+    if (!file_exists($_FILES['profilepic']['tmp_name'])) {
+        if (file_exists(getenv("filelocation_prefix")."profile_pics/$username")) {
+            $flash->add_warning("Removed");
+            unlink(getenv("filelocation_prefix")."profile_pics/$username");
+        } else {
+            $flash->add_warning("Nothing to remove");
+        }
+        header("Location: profile.php?id=$id");
+        exit();
+    }
     if ($size > 15000000) {
         $flash->add_info("File is too big");
     } else {

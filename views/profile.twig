@@ -32,7 +32,6 @@
                                                 <div class="d-flex justify-content-center align-items-center rounded" style="background-color: rgb(233, 236, 239);">
                                                     <img style="width: 100%" src="fileserver.php?folder=profile_pics&file={{ username }}" onerror="this.src='profile_pics/default'"/>
 {#                                                    <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>#}
-                                                    <p>Changes to your profile picture may take a while to show up on the about page, please be patient</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -47,14 +46,20 @@
                                                 <div class="mt-2">
                                                     <form class="form-inline" method="post"  enctype="multipart/form-data"  action="">
                                                         <input type="file" style="display: none;" name="profilepic" >
-
                                                         <button class="btn btn-primary changephoto" type="button">
                                                             <i class="fa fa-fw fa-camera"></i>
                                                             <span>Change Photo</span>
+                                                        </button><br>
+                                                        <button class="btn btn-primary" onclick="delete_photo()">
+                                                            <i class="fa fa-fw fa-camera"></i>
+                                                            <span>Delete Photo</span>
                                                         </button>
+
 
                                                         <input type="submit" id="changephotosubmit" style="display: none;">
                                                     </form>
+                                                    <p>Changes to your profile picture may take a while to show up on the about page, please be patient</p>
+
                                                 </div>
                                             </div>
                                             <div class="text-center text-sm-right">
@@ -296,6 +301,8 @@
 
 {% block script %}
     <script>
+
+
         function change_username() {
 
             change_single(".username");
@@ -327,7 +334,6 @@
 
                 $("#changephotosubmit").trigger("click");
             });
-            console.log("test123");
         });
 
 

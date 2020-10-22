@@ -25,7 +25,7 @@
                     <img src="profile_pics/{{ user.user_uid }}" onload="this.remove()" onerror="this.parentNode.remove()" class="d-block w-100 " >
                     <div class="image" onload='this.style.backgroundImage = `url("fileserver.php?folder=profile_pics&file={{ user.user_uid }}")`' style='background-image: url("profile_pics/{{ user.user_uid }}")'></div>
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>{{ user.user_first}} {{ user.user_last }}</h5>
+                        <h5>{{ user.user_first}}</h5>
 {#                        <p>{{ user.description }}</p>#}
                     </div>
                 </div>
