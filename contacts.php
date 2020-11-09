@@ -2,7 +2,7 @@
 require_once 'init.php';
 require_once 'models/pagesearch.php';
 user::auth("member");
-$sql = "SELECT * FROM users WHERE user_rank > 0";
+$sql = "SELECT * FROM users WHERE user_rank > 0 ORDER BY user_last";
 $result = db::getdb()->query($sql);
 $users = [];
 $page = 0;
