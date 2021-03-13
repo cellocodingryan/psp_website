@@ -11,6 +11,7 @@ require(pathinfo(__FILE__, PATHINFO_DIRNAME)."/../config/passwords.php");
 
 class db {
     private function __construct() {
+//        echo ("???$3");
         $this->db = new mysqli(
             getenv('dbservername'),
             getenv('dbusernname'),
@@ -19,6 +20,7 @@ class db {
         );
     }
     public static function getdb() {
+//        echo ("xx");
         if (!isset(self::$instance)){
             self::$instance = new db();
         }

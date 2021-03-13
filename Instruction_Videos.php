@@ -74,16 +74,17 @@ if (isset($_POST['video_name'])) {
 
 
 
-        $connected = upload::uploadftp($_FILES['file']['tmp_name'],"practice_video/".$_FILES['file']['name']);
-        if (!$connected || $_FILES['file']['error'] != 0) {
-            $worked = false;
-            if (!$connected) {
-                $error_message = "connection_error";
-            } else {
-                $error_message = $_FILES['file']['error'];
-            }
-            $flash->add_danger($error_message);
-        }
+//        $connected = upload::uploadftp($_FILES['file']['tmp_name'],"practice_video/".$_FILES['file']['name']);
+//        if (!$connected || $_FILES['file']['error'] != 0) {
+//            $worked = false;
+//            if (!$connected) {
+//                $error_message = "connection_error";
+//            } else {
+//                $error_message = $_FILES['file']['error'];
+//            }
+//            $flash->add_danger($error_message);
+//        }
+        upload::uploadhttp($_FILES['file']['tmp_name'],"practice_video/".$_FILES['file']['name']);
     }
 
 

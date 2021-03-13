@@ -4,32 +4,33 @@ require_once 'models/user.php';
 session_start();
 require_once 'models/flash.php';
 
+
 if (isset($_FILES['image']) && (isset($_POST['name']) || isset($_POST['custom_name']))) {
     user::auth("director");
     if (isset($_POST['custom_name'])) {
         $_POST['name'] = $_POST['custom_name'];
     }
-    $worked = upload::uploadftp($_FILES['image']['tmp_name'],"schedules/".$_POST['custom_name'] ." ". $_POST['date'] .".". explode(".",$_FILES['image']['name'])[1]);
+
+    if (!upload::uploadhttp($_FILES['image'],"schedules/".$_POST['name'] ." ". $_POST['date'] .".". explode(".",$_FILES['image']['name'])[1],intval($_POST['start']),intval($_POST['complete']))) {
+        http_response_code(500);
+        die();
+    }
     $flash = new flash();
 
-    if (!$worked) {
-        $flash->add_danger("Failed to Upload");
-        header("Location: schedule.php");
-        exit();
-    }
 
-    $file_name= $_POST['custom_name'] ." ". $_POST['date'];
-    $sql = "INSERT INTO schedule (Schedule_date) VALUES ('$file_name')";
-    $res = mysqli_query(db::getdb(),$sql);
+    if (intval($_POST['start']) == 1) {
+        $file_name= $_POST['name'] ." ". $_POST['date'];
+        $sql = "INSERT INTO schedule (Schedule_date) VALUES ('$file_name')";
+        $res = mysqli_query(db::getdb(),$sql);
 
-    $flash->add_success("File uploaded");
-    if (!$res) {
-        if (!$worked) {
+        if (!$res) {
             $flash->add_danger("Failed to Upload (db error)");
             header("Location: schedule.php");
             exit();
         }
     }
+
+
     header("Location: schedule.php?part_name=".$_POST['name']);
     exit();
 }
